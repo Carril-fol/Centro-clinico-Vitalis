@@ -63,8 +63,8 @@
 }
 
 .container-buttons-table-aside {
-    margin: 15px;
-    padding: 50px;
+    padding: 10px;
+    font-size: 0;
 }
 .table-button-delete {
     padding: 12px;
@@ -93,6 +93,7 @@
     background: var(--bg-ocean-blue);
     transition: 0.1s;
     cursor: pointer;
+    margin-right: 10px;
 }
 .table-button-update:hover {
     color: var(--bg-ocean-blue);
