@@ -1,7 +1,8 @@
 <?php
     require '../../models/User.php';
+    require '../core/Controller.php';
 
-    class LoginController
+    class LoginController extends Controller
     {
         private $userModel;
         public $dni;
@@ -11,10 +12,6 @@
             $this->userModel = new User;
             $this->dni = $_POST['dni'];
             $this->password = $_POST['password'];
-        }
-
-        private function sanitizeInput($input) {
-            return htmlentities(addslashes($input));
         }
 
         private function verifyCredentials($dni, $password) {
@@ -28,14 +25,6 @@
             header("Location: ../../views/core/home.php");
             exit();
         }
-
-        private function handleError($error) {
-            session_start();
-            $_SESSION['error'] = $error->getMessage();
-            header("Location: ../../views/auth/login.php");
-            exit();
-        }
-
         public function authenticate() {
             try {
                 $dni = $this->sanitizeInput($this->dni);
@@ -48,7 +37,7 @@
                 
                 $this->redirectToHome();
             } catch (Exception $error) {
-                $this->handleError($error);
+                $this->handleError($error, 'auth', 'login');
             }
         }
     }
