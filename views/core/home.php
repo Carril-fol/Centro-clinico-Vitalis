@@ -1,9 +1,9 @@
 <?php
-    // Imports
+    // Importes
     include("../../controllers/core/HomeController.php");
-
+    
     $homeController = new HomeController();
-    $hasCookie = $homeController->hasAccessTokenInCookies();
+    $homeController->hasAccessTokenInCookies();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,11 +21,7 @@
     ?>
     <section class="seccion-home">
         <div class="container-table">
-            <?php
-                require_once("../../components/turns/TurnTableComponent.php");
-                $turns = $homeController->showTurns();
-                renderTurnTable($turns);
-            ?>
+            <?php require_once("../../components/turns/table/TurnTableComponent.php"); ?>
         </div>
     </section>
 </body>
