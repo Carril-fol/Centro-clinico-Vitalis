@@ -1,7 +1,7 @@
 <?php
-    require '../../models/Turn.php';
-    require '../../models/Medic.php';
-    require '../core/Controller.php';
+    require_once '../../models/Turn.php';
+    require_once '../../models/Medic.php';
+    require_once '../../controllers/core/Controller.php';
 
     class TurnController extends Controller
     {
@@ -62,7 +62,7 @@
                 $this->createTurn($turnData);
                 $this->redirectToHome();
             } catch (Exception $error) {
-                $this->handleError($error, 'turn', 'createTurn');
+                $this->handleError($error, 'turn', 'create');
             }
         }
 
@@ -74,6 +74,11 @@
             } catch (Exception $error) {
                 $this->handleError($error, "core", "home");
             }
+        }
+
+        public function showTurnsAvailable() {
+            $turns = $this->turnModel->getAllTurnsAvailable();
+            return $turns;
         }
     }
 
