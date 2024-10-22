@@ -92,8 +92,8 @@ class Turn
         return $resultQuery->execute($paramsQuery);
     }
 
-    public function getAllTurns(){
-        $selectQuery = "SELECT * FROM turno";
+    public function getAllTurnsAvailable(){
+        $selectQuery = "SELECT * FROM turno WHERE estado = 'PENDIENTE'";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute();
         $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
