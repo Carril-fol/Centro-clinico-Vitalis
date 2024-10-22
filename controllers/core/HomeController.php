@@ -1,23 +1,20 @@
 <?php
     // Importes
-    require '../../config.php';
+    require_once 'Controller.php';
 
-    class HomeController 
+    class HomeController extends Controller
     {
-        public function showTurns() {
-            require_once '../../models/Turn.php';
-            $turnModel = new Turn();
-            $turns = $turnModel->getAllTurns();
-            return $turns;
-        }
 
         public function hasAccessTokenInCookies() {
-            $cookie = $_COOKIE["accessToken"];
-            if (!isset($cookie)) {
-                header("Location: ../../views/auth/login.php");
-                exit();
+            try {
+                $cookie = $_COOKIE["accessToken"];
+                if (!isset($cookie)) {
+                    throw new Exception("Tienes que iniciar sesión para poder accerder");
+                }
+                return true;
+            } catch (Exception $error) {
+                $this->handleError($error, 'auth', 'login');
             }
-            return true;
         }
 
     }
