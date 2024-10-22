@@ -3,7 +3,7 @@
     class Controller
     {
 
-        public  function sanitizeInput($input) {
+        public function sanitizeInput($input) {
             return htmlentities(addslashes($input));
         }
 
@@ -22,14 +22,20 @@
         public function getParamsUrl($url) {
             $urlParsed = $this->sanitizeURL($url);
             $queryParams = [];
-            parse_str($urlParsed['query'], $queryParams);
+            if (isset($urlParsed['query'])) {
+                parse_str($urlParsed['query'], $queryParams);
+            }
             return $queryParams;
         }
 
         public function getActionInUrl() {
             $url = $_SERVER['REQUEST_URI'];
             $queryParams = $this->getParamsUrl($url);
-            $action = $queryParams['action'];
+            if (isset($queryParams['action'])) {
+                $action = $queryParams['action'];
+            } else {
+                $action = null;
+            }
             return $action;
         }
 
