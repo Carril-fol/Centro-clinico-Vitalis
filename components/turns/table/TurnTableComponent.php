@@ -3,7 +3,7 @@
     require_once '../../controllers/turn/TurnController.php';
     require_once 'TurnDataTableComponent.php';
 
-    // Turnos 
+    // Llamado de funcion del controlador 
     $turns = $turnController->showTurnsAvailable();
     
     function renderTurnTable($turns) {
@@ -16,7 +16,7 @@
         } else {
             echo "
                 <div class='container-table-button-top'>
-                    <a href='../../views/turn/createTurn.php'>
+                    <a href='../../views/turn/create.php'>
                         <button class='table-button-add'>
                             Agregar
                         </button>
