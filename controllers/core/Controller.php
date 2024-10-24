@@ -44,6 +44,15 @@
             $id = $this->getParamsUrl($url)['id'];
             return $id;
         }
+
+        public function errorInSession()
+        {
+            session_start();
+            if (isset($_SESSION['error'])) {
+                echo "<div style='color: red;'>Error: " . $_SESSION['error'] . "</div>";
+                unset($_SESSION['error']);
+            }
+        }
     }
 
 ?>
