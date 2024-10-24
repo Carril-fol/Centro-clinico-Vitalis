@@ -6,7 +6,7 @@
     class TurnController extends Controller
     {
         private $turnModel; 
-        private $medicModel;
+        public $medicModel;
 
         function __construct() {
             $this->turnModel = new Turn;
@@ -15,6 +15,13 @@
 
         private function redirectToHome() {
             header("Location: ../../views/core/home.php");
+            exit();
+        }
+
+        private function redirectToEditTurn($error, $folder, $file, $id) {
+            session_start();
+            $_SESSION['error'] = $error->getMessage();
+            header("Location: ../../views/" . $folder . "/" . $file . ".php" . "?action=update%id=" . $id);
             exit();
         }
 
@@ -56,13 +63,43 @@
             }
         }
 
+        public function detailTurn() {
+            try {
+                $id = $this->getIdUrl();
+                $this->turnModel->setId($id);
+                $turnData = $this->turnModel->detailTurnById();
+                return $turnData;
+            } catch (Exception $error) {
+                $this->handleError($error, folder: "core", file: "home");
+
+            }
+        }
+
+        private function actualizeTurn($turnData, $id) {
+            $turnDataInDatabase = $this->detailTurn();
+            if ($turnData['speciality'] != $turnDataInDatabase['especialidad']) {
+                $dniMedicTurnInDatabase = $turnDataInDatabase['dni_medico'];
+                $this->medicModel->changeStatusMedic($dniMedicTurnInDatabase, "DESOCUPADO");
+            }
+            $dniMedic = $this->getMedicForTurn($turnData['speciality'])['dni'];
+            $this->medicModel->changeStatusMedic($dniMedic, "OCUPADO");
+            $this->turnModel->setId($id);
+            $this->turnModel->setDniPatient($turnData['dniPatient']);
+            $this->turnModel->setDniMedic($dniMedic);
+            $this->turnModel->setDateAtention($turnData['dateAtention']);
+            $this->turnModel->setTurnTime($turnData['turnTime']);
+            $this->turnModel->setSpeciality($turnData['speciality']);
+            $this->turnModel->updateTurnById();
+        }
+        
+
         public function registerTurn() {
             try {
                 $turnData = $this->getDataFromForm();
                 $this->createTurn($turnData);
                 $this->redirectToHome();
             } catch (Exception $error) {
-                $this->handleError($error, 'turn', 'create');
+                $this->handleError($error, folder: 'turn', file: 'create');
             }
         }
 
@@ -72,7 +109,7 @@
                 $this->deleteTurnById($id);
                 $this->redirectToHome();
             } catch (Exception $error) {
-                $this->handleError($error, "core", "home");
+                $this->handleError($error, folder: "core", file: "home");
             }
         }
 
@@ -80,6 +117,24 @@
             $turns = $this->turnModel->getAllTurnsAvailable();
             return $turns;
         }
+
+        public function updateTurn() {
+            try {
+                $requestMethod = $_SERVER['REQUEST_METHOD'];
+                $id = $this->getIdUrl();
+                if ($requestMethod == "GET") {
+                    $turnData = $this->detailTurn();
+                    return $turnData;
+                } else if ($requestMethod == "POST") {
+                    $turnFormData = $this->getDataFromForm();
+                    $this->actualizeTurn($turnFormData, $id);
+                    $this->redirectToHome();
+                }
+            } catch (Exception $error) {
+                $this->redirectToEditTurn($error, 'turn', 'update', $id);
+            }
+        }
+        
     }
 
     $turnController = new TurnController();    
@@ -92,5 +147,8 @@
         case "CREATE":
             $createdTurn = $turnController->registerTurn();
             break;
-        }
+        case "UPDATE":
+            $updateTurn = $turnController->updateTurn();
+            break;
+    }
 ?>
