@@ -36,7 +36,9 @@ class Medic
 
     public function getMedicByDni($dni){   
         $paramsQuery = [":dni" => $dni];
-        $selectQuery = "SELECT * FROM medico WHERE $dni = :dni";
+        $selectQuery = "SELECT * 
+                        FROM medico
+                        WHERE dni = :dni";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
         $row = $resultQuery->fetch(PDO::FETCH_ASSOC);
@@ -45,7 +47,10 @@ class Medic
 
     public function getMedicsBySpeciality($speciality) {
         $paramsQuery = [":speciality" => $speciality, ":status" => "DESOCUPADO"];
-        $selectQuery = "SELECT dni, especialidad FROM medico WHERE estado = :status AND especialidad = :speciality";
+        $selectQuery = "SELECT dni, especialidad 
+                        FROM medico 
+                        WHERE estado = :status 
+                        AND especialidad = :speciality";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
         $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -54,12 +59,23 @@ class Medic
 
     public function changeStatusMedic($dniMedic, $status) {
         $paramsQuery = [":dniMedic" => $dniMedic, ":status" => $status];
-        $selectQuery = "UPDATE medico SET estado = :status WHERE dni = :dniMedic";
+        $selectQuery = "UPDATE medico 
+                        SET estado = :status 
+                        WHERE dni = :dniMedic";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
         return $resultQuery->rowCount() > 0;
     }
 
+    public function getSpecialitiesAvailable() {
+        $selectQuery = "SELECT DISTINCT especialidad
+                        FROM medico
+                        WHERE estado = 'DESOCUPADO'";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute();
+        $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
 }
 
 ?>
