@@ -28,7 +28,7 @@ class Turn
 
     public function setId($id) {
         if ($id < 0) {
-            throw new Exception("");
+            throw new Exception("Las ID no pueden ser menores a 1");
         }
         $this->id = $id;
     }
@@ -86,14 +86,31 @@ class Turn
             ":turnTime" => $this->turnTime,
             ":speciality" => $this->speciality
         ];
-        $insertQuery = "INSERT INTO turno (dni_paciente, dni_medico, fecha_atencion, fecha_creacion, horario, estado, especialidad)
-            VALUES (:dniPatient, :dniMedic, :dateAtention, :dateCreation, :turnTime, 'PENDIENTE', :speciality)";
+        $insertQuery = "INSERT INTO turno (
+            dni_paciente, 
+            dni_medico, 
+            fecha_atencion, 
+            fecha_creacion,
+            horario, 
+            estado, 
+            especialidad
+        ) VALUES (
+            :dniPatient, 
+            :dniMedic, 
+            :dateAtention, 
+            :dateCreation, 
+            :turnTime, 
+            'PENDIENTE', 
+            :speciality
+        )";
         $resultQuery = $this->db->prepare($insertQuery);
         return $resultQuery->execute($paramsQuery);
     }
 
     public function getAllTurnsAvailable(){
-        $selectQuery = "SELECT * FROM turno WHERE estado = 'PENDIENTE'";
+        $selectQuery = "SELECT *
+                        FROM turno
+                        WHERE estado = 'PENDIENTE'";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute();
         $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -102,10 +119,40 @@ class Turn
 
     public function deleteTurnById() {
         $paramsQuery = [":id" => $this->id];
-        $deleteQuery = "UPDATE turno SET estado = 'CANCELADO' WHERE id = :id";
+        $deleteQuery = "UPDATE turno 
+                        SET estado = 'CANCELADO'
+                        WHERE id = :id";
         $resultQuery = $this->db->prepare($deleteQuery);
         $resultQuery->execute($paramsQuery);
         return $resultQuery->rowCount();
+    }
+
+    public function updateTurnById() {
+        $paramsQuery = [
+            ":id" => $this->id,
+            ":dniPatient" => $this->dniPatient,
+            ":dateAtention" => $this->dateAtention, 
+            ":turnTime" => $this->turnTime,
+            ":dniMedic" => $this->dniMedic,
+            ":speciality" => $this->speciality
+        ];
+        $updateQuery = "UPDATE turno 
+                        SET dni_paciente = :dniPatient, dni_medico = :dniMedic, fecha_atencion = :dateAtention, horario = :turnTime, especialidad = :speciality 
+                        WHERE id = :id";
+        $resultQuery = $this->db->prepare($updateQuery);
+        $resultQuery->execute($paramsQuery);
+        return $resultQuery->rowCount();
+    }
+    
+    public function detailTurnById() {
+        $paramsQuery = [":id" => $this->id];
+        $selectQuery = "SELECT *
+                        FROM turno
+                        WHERE id = :id";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute($paramsQuery);
+        $row = $resultQuery->fetch(PDO::FETCH_ASSOC);
+        return $row;
     }
 }
 ?>
