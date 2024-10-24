@@ -1,19 +1,12 @@
 <?php
-    // Imports
+    // Importes
     include("../../controllers/core/HomeController.php");
 
+    // Instancia de controlador
     $homeController = new HomeController();
-    $homeController->hasAccessTokenInCookies();
-    
-    function errorInSession()
-    {
-        session_start();
-        if (isset($_SESSION['error'])) {
-            echo "<div style='color: red;'>Error: " . $_SESSION['error'] . "</div>";
-            unset($_SESSION['error']);
-        }
-    }
 
+    // Llamado de función del controlador
+    $homeController->hasAccessTokenInCookies();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,8 +22,8 @@
     <?php include("../../components/common/headerLogged.html"); ?>
     <section class="section-turn">
         <div>
-            <?php errorInSession(); ?>
-            <?php include("../../components/turns/TurnFormComponentAdministrative.php"); ?>
+            <?php $homeController->errorInSession(); ?>
+            <?php include("../../components/turns/forms/TurnFormComponentAdministrative.php"); ?>
         </div>
     </section>
     <?php include("../../components/common/footer.html"); ?>
