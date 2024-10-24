@@ -1,16 +1,10 @@
 <?php
+    // Importes
+    include("../../controllers/core/HomeController.php");
 
-    function errorInSession()
-    {
-        session_start();
-        if (isset($_SESSION['error'])) {
-            echo "<div style='color: red;'>Error: " . "Dni o Contraseña invalida" . "</div>";
-            unset($_SESSION['error']);
-        }
-    }
-
+    // Instancia de controlador
+    $homeController = new HomeController();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,9 +16,7 @@
     <link rel="shortcut icon" href="../../assets/images/logo.webp" type="image/x-icon">
 </head>
 <body>
-    <?php
-        include("../../components/common/header.html");
-    ?>
+    <?php include("../../components/common/header.html"); ?>
     <section class="section-formulario-login">
         <form class="formulario-login" action="../../controllers/auth/LoginController.php" method="POST">
             <div class="formulario-login-logo-titulo">
@@ -37,14 +29,12 @@
             <div>
                 <input type="password" name="password" placeholder="Contraseña" required/>
             </div>
-            <?php errorInSession(); ?>
+            <?php $homeController->errorInSession(); ?>
             <div>
                 <button type="submit">Iniciar Sesión</button>
             </div>
         </form>
     </section>
-    <?php
-        include("../../components/common/footer.html");
-    ?>
+    <?php include("../../components/common/footer.html"); ?>
 </body>
 </html>
