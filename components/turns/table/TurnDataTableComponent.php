@@ -11,7 +11,7 @@
                     <td>" . htmlspecialchars($row['estado']) . "</td>
                     <td>
                         <div class='container-buttons-table-aside'>
-                            <a href='../../controllers/turn/TurnController.php?action=update&id=" . $row['id'] . "'>
+                            <a href='../../views/turn/update.php?action=update&id=" . $row['id'] . "'>
                                 <button class='table-button-update' type='button'>Editar</button>
                             </a>
                             <a href='../../controllers/turn/TurnController.php?action=delete&id=" . $row['id'] . "'>
