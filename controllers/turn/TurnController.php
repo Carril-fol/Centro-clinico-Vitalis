@@ -91,7 +91,6 @@
             $this->turnModel->setSpeciality($turnData['speciality']);
             $this->turnModel->updateTurnById();
         }
-        
 
         public function registerTurn() {
             try {
