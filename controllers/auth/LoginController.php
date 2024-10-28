@@ -25,6 +25,7 @@
             header("Location: ../../views/core/home.php");
             exit();
         }
+        
         public function authenticate() {
             try {
                 $dni = $this->sanitizeInput($this->dni);
