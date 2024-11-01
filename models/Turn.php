@@ -11,8 +11,9 @@ class Turn
     private $dateCreation;
     private $turnTime;
     private $speciality;
+    private $status;
 
-    public function __construct($id = null, $dniPatient = null, $dniMedic = null, $dateAtention = null, $turnTime = null, $speciality = null) {
+    public function __construct($id = null, $dniPatient = null, $dniMedic = null, $dateAtention = null, $turnTime = null, $speciality = null, $status = null) {
         $this->db = (new Database())->connection();
         $this->dniPatient = $dniPatient;
         $this->dniMedic = $dniMedic;
@@ -20,6 +21,7 @@ class Turn
         $this->dateCreation = date("Y-m-d");
         $this->turnTime = $turnTime;
         $this->speciality = $speciality;
+        $this->status = $status;
     }
 
     public function getId() {
@@ -75,6 +77,14 @@ class Turn
 
     public function setSpeciality($speciality) {
         $this->speciality = $speciality;
+    }
+
+    public function getStatus() {
+        return $this->status;
+    }
+
+    public function setStatus($status) {
+        $this->status = $status;
     }
 
     public function createTurn(){   
@@ -153,6 +163,19 @@ class Turn
         $resultQuery->execute($paramsQuery);
         $row = $resultQuery->fetch(PDO::FETCH_ASSOC);
         return $row;
+    }
+
+    public function updateStatusTurnById() {
+        $paramsQuery = [
+            ":status" =>$this->status,
+            ":id" => $this->id
+        ];
+        $updateQuery = "UPDATE turno
+                        SET estado = :status
+                        WHERE id = :id";
+        $resultQuery = $this->db->prepare($updateQuery);
+        $resultQuery->execute($paramsQuery);
+        return $resultQuery->rowCount();
     }
 }
 ?>
