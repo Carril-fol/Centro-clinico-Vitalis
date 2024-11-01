@@ -45,5 +45,5 @@ CREATE TABLE turno (
     especialidad VARCHAR(255),
     estado VARCHAR(255),
     FOREIGN KEY (dni_medico) REFERENCES medico(dni),
-    FOREIGN KEY (dni) REFERENCES usuario(dni)
+    FOREIGN KEY (dni_paciente) REFERENCES paciente(dni)
 )
