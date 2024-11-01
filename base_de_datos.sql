@@ -11,7 +11,7 @@ CREATE TABLE usuario (
     contraseña VARCHAR(255),
     estado VARCHAR(255),
     esSuperUsuario BOOLEAN,
-    esStaff BOOLEAN,
+    esStaff BOOLEAN
 );
 
 CREATE TABLE medico (
