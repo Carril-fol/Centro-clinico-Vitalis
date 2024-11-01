@@ -1,12 +1,11 @@
 <?php
-    // Importes
-    include("../../controllers/core/HomeController.php");
+require_once("../../controllers/core/HomeController.php");
 
-    // Instancia de controlador
-    $homeController = new HomeController();
+$homeController = new HomeController();
 
-    // Llamado de función del controlador
-    $homeController->hasAccessTokenInCookies();
+$homeController->hasAccessTokenInCookies();
+
+$rol = $homeController->rolFromUser();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,11 +18,23 @@
     <link rel="shortcut icon" href="../../assets/images/logo.webp" type="image/x-icon">
 </head>
 <body>
-    <?php include("../../components/common/headerLogged.html"); ?>
+    <?php include("../../components/common/headerLogged.php"); ?>
     <section class="seccion-home">
         <div class="container-table">
-            <?php require_once("../../components/turns/table/TurnTableComponent.php"); ?>
+            <?php
+            switch ($rol) {
+                case "administrativo":
+                    require_once("../../components/turns/table/TurnTableComponent.php");
+                    break;
+                case "médico":
+                    require_once("../../components/turns/table/medics/TurnTableComponentMedic.php");
+                    break;
+                case "paciente":
+                    break;
+            }
+            ?>
         </div>
     </section>
 </body>
 </html>
+<script src="../../js/index.js"></script>
