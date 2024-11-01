@@ -28,10 +28,10 @@ class Medic
             ":medicSpeciality" => $medicSpeciality,
             ":status" => "DESOCUPADO"
         ];
-        $insertQuery = "INSERT INTO medico (dni, matricula, especialidad, estado) VALUES (:dni, :medicLicense, :medicSpeciality, :status)";
+        $insertQuery = "INSERT INTO medico (dni, matricula, especialidad, estado) VALUES (:dni, :matricula, :medicSpeciality, :status)";
         $resultQuery = $this->db->prepare($insertQuery);
         $resultQuery->execute($paramsQuery);
-        return true;
+        return $resultQuery;
     }
 
     public function getMedicByDni($dni){   
@@ -76,6 +76,22 @@ class Medic
         $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
         return $rows;
     }
+
+    public function getTurnsForMedicByDni($dniMedic, $status) {
+        $paramsQuery = [
+            ":dni_medico" => $dniMedic,
+            ":estado" => $status
+        ];
+        $selectQuery = "SELECT *
+                        FROM turno
+                        WHERE dni_medico = :dni_medico
+                        AND estado = :estado";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute($paramsQuery);
+        $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
+
 }
 
 ?>
