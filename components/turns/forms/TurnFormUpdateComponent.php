@@ -1,14 +1,10 @@
 <?php
-// Importe de controlador
 require_once '../../controllers/turn/TurnController.php';
 
-// Instancia de controlador
 $turnController = new TurnController();
 
-// Llamado de función del modelo de Medico
 $specialities = $turnController->medicModel->getSpecialitiesAvailable();
 
-// Llamado a función del controlador
 $turnData = $turnController->detailTurn();
 
 function optionsFormated($turnData, $specialities) {
@@ -25,7 +21,6 @@ function optionsFormated($turnData, $specialities) {
         <?php
     endforeach;
 }
-
 ?>
 <!-- Formulario -->
 <form class='formulario-turno-creacion' method='POST' action='../../controllers/turn/TurnController.php?action=update&id=<?php echo $turnData['id']; ?>'>
