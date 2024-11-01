@@ -1,12 +1,12 @@
 <?php
-    // Importes
-    include("../../controllers/core/HomeController.php");
+// Importes
+include("../../controllers/core/HomeController.php");
 
-    // Instancia de controlador
-    $homeController = new HomeController();
+// Instancia de controlador
+$homeController = new HomeController();
 
-    // Llamado de función del controlador
-    $homeController->hasAccessTokenInCookies();
+// Llamado de función del controlador
+$homeController->hasAccessTokenInCookies();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +16,9 @@
     <title>Centro Clinico Vitalis</title>
     <link rel="stylesheet" href="../../css/App.css">
     <link rel="stylesheet" href="../../css/turn/Turn.css">
-    <link rel="shortcut icon" href="../../assets/images/logo.webp" type="image/x-icon"></title></head>
+    <link rel="shortcut icon" href="../../assets/images/logo.webp" type="image/x-icon">
+    </title>
+</head>
 <body>
     <?php include("../../components/common/headerLogged.html"); ?>
     <section class="section-turn">
