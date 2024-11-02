@@ -86,6 +86,40 @@ class User
         $row = $resultQuery->fetch(PDO::FETCH_ASSOC);
         return $row;
     }
+
+    public function enviarCorreoBienvenida($clienteEmail, $clienteNombre) {
+        //Esta parte se tiene que cambiar por el correo de la empresa o un correo verdadro, para que no se lo detecte como posible spam o sea eliminado automaticamente
+        $emailFrom = "no-reply@tu-dominio.com";
+
+        $to = $clienteEmail;
+        $subject = "Bienvenido a Centro Clinico Vitalis";
+        $message = "
+        <html>
+        <head>
+            <title>Bienvenido a Centro Clinico Vitalis</title>
+        </head>
+        <body>
+            <h1>Hola, $clienteNombre!</h1>
+            <p>Gracias por registrarte en nuestro sistema. Estamos encantados de tenerte con nosotros.</p>
+        </body>
+        </html>
+        ";
+    
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    
+        $headers .= "From: $emailFrom" . "\r\n";
+
+        $enviado = mail($to, $subject, $message, $headers);
+        
+// AL SUBIR EL CODIGO A LA WEB SE DEbERA BORRAR LA SIGUIENTE LINEA Y DESCOMENTAR LAS DEMAS. SE DEBERA ASEGURAR EL SERVIDOR WEB TIENE SOPORTE SMTP y CONFIGURADO PARA ENVIO DE CORREOS
+        header(header: "Location: ../../views/core/confirm.php");
+        // if($enviado) { 
+        //     header(header: "Location: ../../views/core/confirm.php");
+        // } else {
+        //     echo "Error al enviar el mensaje";
+        // }
+    }
 }
 
 ?>

@@ -50,7 +50,8 @@ try {
             $patientModel->createPatient($dni);
             break;
     }
-    header(header: "Location: ../../views/core/home.php");
+    // header(header: "Location: ../../views/core/home.php");   
+    $userModel->enviarCorreoBienvenida($email, $firstName);
     exit();
 } catch (Exception $e) {
     $_SESSION['error'] = $e->getMessage();
