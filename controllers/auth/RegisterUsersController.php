@@ -55,7 +55,8 @@ try {
     exit();
 } catch (Exception $e) {
     $_SESSION['error'] = $e->getMessage();
-    header(header: "Location: ../../views/auth/register.php");
+    $mensajeErr = $e->getMessage();
+    echo "<script language='javascript'>alert('$mensajeErr');window.location.href = '../../views/auth/register.php';</script>";
     exit();
 }
 
