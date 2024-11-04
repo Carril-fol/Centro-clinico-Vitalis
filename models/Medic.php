@@ -34,27 +34,20 @@ class Medic
         return $resultQuery;
     }
 
-    public function getMedicByDni($dni){   
+    public function getMedicByDni($dni){
         $paramsQuery = [":dni" => $dni];
-        $selectQuery = "SELECT * 
-                        FROM medico
-                        WHERE dni = :dni";
+        $selectQuery = "SELECT * FROM medico WHERE dni = :dni";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
-        $row = $resultQuery->fetch(PDO::FETCH_ASSOC);
-        return $row;
+        return $resultQuery->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getMedicsBySpeciality($speciality) {
         $paramsQuery = [":speciality" => $speciality, ":status" => "DESOCUPADO"];
-        $selectQuery = "SELECT dni, especialidad 
-                        FROM medico 
-                        WHERE estado = :status 
-                        AND especialidad = :speciality";
+        $selectQuery = "SELECT dni, especialidad FROM medico  WHERE estado = :status AND especialidad = :speciality";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
-        $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
-        return $rows;
+        return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function changeStatusMedic($dniMedic, $status) {
@@ -68,13 +61,10 @@ class Medic
     }
 
     public function getSpecialitiesAvailable() {
-        $selectQuery = "SELECT DISTINCT especialidad
-                        FROM medico
-                        WHERE estado = 'DESOCUPADO'";
+        $selectQuery = "SELECT DISTINCT especialidad FROM medico WHERE estado = 'DESOCUPADO'";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute();
-        $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
-        return $rows;
+        return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getTurnsForMedicByDni($dniMedic, $status) {
@@ -82,14 +72,10 @@ class Medic
             ":dni_medico" => $dniMedic,
             ":estado" => $status
         ];
-        $selectQuery = "SELECT *
-                        FROM turno
-                        WHERE dni_medico = :dni_medico
-                        AND estado = :estado";
+        $selectQuery = "SELECT * FROM turno WHERE dni_medico = :dni_medico AND estado = :estado";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
-        $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
-        return $rows;
+        return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }
