@@ -1,8 +1,8 @@
 <?php
-require_once '../../controllers/turn/TurnController.php';
-require_once 'TurnDataTableComponent.php';
+require_once '../../controllers/administrative/AdministrativeController.php';
 
-$turns = $turnController->showTurnsAvailable();
+$administrativeController = new AdministrativeController();
+$turns = $administrativeController->showTurnPending();
 ?>
 <?php if (!empty($turns)): ?>
     <?php foreach ($turns as $turn): ?>
@@ -27,6 +27,6 @@ $turns = $turnController->showTurnsAvailable();
     <?php endforeach; ?>
 <?php else: ?>
     <tr>
-        <td colspan="7">No hay turnos disponibles.</td>
+        <td colspan="7">No hay turnos pendientes.</td>
     </tr>
 <?php endif; ?>
