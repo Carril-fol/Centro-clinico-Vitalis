@@ -3,15 +3,15 @@ require_once  __DIR__ . '/../config.php';
 
 class Turn
 {
-    private $db;
-    private $id;
-    private $dniPatient;
-    private $dniMedic;
-    private $dateAtention;
-    private $dateCreation;
-    private $turnTime;
-    private $speciality;
-    private $status;
+    public $db;
+    public $id;
+    public $dniPatient;
+    public $dniMedic;
+    public $dateAtention;
+    public $dateCreation;
+    public $turnTime;
+    public $speciality;
+    public $status;
 
     public function __construct($id = null, $dniPatient = null, $dniMedic = null, $dateAtention = null, $turnTime = null, $speciality = null, $status = null)
     {
@@ -110,6 +110,7 @@ class Turn
             ":dateAtention" => $this->dateAtention,
             ":dateCreation" =>  $this->dateCreation,
             ":turnTime" => $this->turnTime,
+            ":status" => $this->status,
             ":speciality" => $this->speciality
         ];
         $insertQuery = "INSERT INTO turno (
@@ -126,7 +127,7 @@ class Turn
             :dateAtention,
             :dateCreation,
             :turnTime,
-            'PENDIENTE',
+            :status,
             :speciality
         )";
         $resultQuery = $this->db->prepare($insertQuery);
@@ -191,9 +192,7 @@ class Turn
             ":status" => $this->status,
             ":id" => $this->id
         ];
-        $updateQuery = "UPDATE turno
-                        SET estado = :status
-                        WHERE id = :id";
+        $updateQuery = "UPDATE turno SET estado = :status WHERE id = :id";
         $resultQuery = $this->db->prepare($updateQuery);
         $resultQuery->execute($paramsQuery);
         return $resultQuery->rowCount();
