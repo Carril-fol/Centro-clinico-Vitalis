@@ -9,7 +9,8 @@ class User
         $this->db = (new Database())->connection();
     }
 
-    private function checkIfUserExists($dni): bool{   
+    private function checkIfUserExists($dni)
+    {
         $paramsQuery = [':dni'=>$dni];
         $selectQuery = "SELECT dni FROM usuario WHERE dni = :dni";
         $resultQuery = $this->db->prepare($selectQuery);
@@ -52,7 +53,8 @@ class User
         return $row;
     }
 
-    public function getDataFromUserByDni($dni){   
+    public function getDataFromUserByDni($dni)
+    {
         $paramsQuery = [':dni'=>$dni];
         $selectQuery = "SELECT id, dni, nombre, apellido, email FROM usuario WHERE dni = :dni";
         $resultQuery = $this->db->prepare($selectQuery);
