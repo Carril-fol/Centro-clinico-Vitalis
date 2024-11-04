@@ -1,53 +1,70 @@
 <?php
 require_once "../../models/Patient.php";
+require_once "../../models/Turn.php";
+require_once "../../models/TurnRequested.php";
+require_once "../../models/Medic.php";
 require_once "../../controllers/core/Controller.php";
-require_once "../../controllers/turn/TurnController.php";
 
 class PatientController extends Controller
 {
     private $patientModel;
-    private $turnController;
+    private $turnModel;
+    private $turnRequestedModel;
 
     function __construct()
     {
         $this->patientModel = new Patient();
-        $this->turnController = new TurnController();
+        $this->turnModel = new Turn();
+        $this->turnRequestedModel = new TurnRequested();
     }
 
     private function redirectToHome()
     {
-        header("refresh:3; url=home.php");
+        header("Location: ../../views/core/home.php");
         exit();
     }
-    public function showTurnFromPatient()
+
+    private function getDataFromFormPatient()
+    {
+        return [
+            'dniPatient' => $this->sanitizeInput($this->getDniFromToken()),
+            'dateAtention' => $this->sanitizeInput($_POST['dateAtention']),
+            'turnTime' => $this->sanitizeInput($_POST['timeAtention']),
+            'speciality' => strtoupper($this->sanitizeInput($_POST['speciality']))
+        ];
+    }
+
+    public function showTurnRequestedFromPatient()
     {
         $dniInCookies = $this->getDniFromToken();
-        $turns = $this->patientModel->getTurnsFromPatientByDni($dniInCookies);
-        return $turns;
+        return $this->patientModel->getTurnsRequestedFromPatientByDni($dniInCookies);
     }
 
-    private function getFormatedDataFromForm()
+    public function showHistoryTurnsFromPatient()
     {
-        $dniUser = $this->getDniFromToken();
-        $data = $this->turnController->getDataFromForm();
-        $data["dniPatient"] = $dniUser;
-        return $data;
+        $dniInCookies = $this->getDniFromToken();
+        return $this->patientModel->getTurnsCanceledOrCompletedFromPatientByDni($dniInCookies);
     }
 
-    public function createTurn() 
+    public function registerTurnPatient()
     {
-        $data = $this->getFormatedDataFromForm();
-        var_dump($data);
-        //$this->turnController->createTurn($data);
-        ///$this->redirectToHome();
+        $data = $this->getDataFromFormPatient();
+
+        $this->turnModel->setStatus("SOLICITADO");
+        $this->turnModel->setDniPatient($data['dniPatient']);
+        $this->turnModel->setDateAtention($data['dateAtention']);
+        $this->turnModel->setTurnTime($data['turnTime']);
+        $this->turnModel->setSpeciality($data['speciality']);
+        $this->turnRequestedModel->createTurnRequested();
+        $this->redirectToHome();
     }
 }
 
-$patientController = new PatientController();
-$action = strtoupper($patientController->getActionInUrl());
+$controller = new PatientController();
+$action = $controller->getActionInUrl();
 
 switch ($action) {
     case "CREATE":
-        $createdTurn = $patientController->createTurn();
+        $createdTurn = $controller->registerTurnPatient();
         break;
 }
