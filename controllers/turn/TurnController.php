@@ -5,13 +5,13 @@ require_once '../../controllers/core/Controller.php';
 
 class TurnController extends Controller
 {
-    private $turnModel;
+    public $turnModel;
     public $medicModel;
 
     function __construct()
     {
-        $this->turnModel = new Turn;
-        $this->medicModel = new Medic;
+        $this->turnModel = new Turn();
+        $this->medicModel = new Medic();
     }
 
     private function redirectToHome()
@@ -39,13 +39,12 @@ class TurnController extends Controller
 
     public function getDataFromForm()
     {
-        $data = [
+        return [
             'dniPatient' => $this->sanitizeInput($_POST['dniPatient']),
             'dateAtention' => $this->sanitizeInput($_POST['dateAtention']),
             'turnTime' => $this->sanitizeInput($_POST['timeAtention']),
             'speciality' => strtoupper($this->sanitizeInput($_POST['speciality']))
         ];
-        return $data;
     }
 
     public function createTurn($turnData)
@@ -53,6 +52,7 @@ class TurnController extends Controller
         $dniMedic = $this->getMedicForTurn($turnData['speciality'])['dni'];
         $this->medicModel->changeStatusMedic($dniMedic, "OCUPADO");
 
+        $this->turnModel->setStatus("PENDIENTE");
         $this->turnModel->setDniPatient($turnData['dniPatient']);
         $this->turnModel->setDniMedic($dniMedic);
         $this->turnModel->setDateAtention($turnData['dateAtention']);
@@ -75,8 +75,7 @@ class TurnController extends Controller
         try {
             $id = $this->getIdUrl();
             $this->turnModel->setId($id);
-            $turnData = $this->turnModel->detailTurnById();
-            return $turnData;
+            return $this->turnModel->detailTurnById();
         } catch (Exception $error) {
             $this->handleError($error, folder: "core", file: "home");
         }
@@ -124,8 +123,7 @@ class TurnController extends Controller
 
     public function showTurnsAvailable()
     {
-        $turns = $this->turnModel->getAllTurnsAvailable();
-        return $turns;
+        return $this->turnModel->getAllTurnsAvailable();
     }
 
     public function updateTurn()
@@ -134,8 +132,7 @@ class TurnController extends Controller
             $requestMethod = $_SERVER['REQUEST_METHOD'];
             $id = $this->getIdUrl();
             if ($requestMethod == "GET") {
-                $turnData = $this->detailTurn();
-                return $turnData;
+                return $this->detailTurn();
             } else if ($requestMethod == "POST") {
                 $turnFormData = $this->getDataFromForm();
                 $this->actualizeTurn($turnFormData, $id);
@@ -147,17 +144,17 @@ class TurnController extends Controller
     }
 }
 
-$turnController = new TurnController();
-$action = strtoupper($turnController->getActionInUrl());
+$controller = new TurnController();
+$action = strtoupper($controller->getActionInUrl());
 
 switch ($action) {
     case "DELETE":
-        $deletedTurn = $turnController->deleteTurn();
+        $deletedTurn = $controller->deleteTurn();
         break;
     case "CREATE":
-        $createdTurn = $turnController->registerTurn();
+        $createdTurn = $controller->registerTurn();
         break;
     case "UPDATE":
-        $updateTurn = $turnController->updateTurn();
+        $updateTurn = $controller->updateTurn();
         break;
 }
