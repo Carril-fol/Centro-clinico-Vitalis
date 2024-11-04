@@ -37,7 +37,7 @@ class TurnController extends Controller
         return $medics[0];
     }
 
-    private function getDataFromForm()
+    public function getDataFromForm()
     {
         $data = [
             'dniPatient' => $this->sanitizeInput($_POST['dniPatient']),
@@ -48,7 +48,7 @@ class TurnController extends Controller
         return $data;
     }
 
-    private function createTurn($turnData)
+    public function createTurn($turnData)
     {
         $dniMedic = $this->getMedicForTurn($turnData['speciality'])['dni'];
         $this->medicModel->changeStatusMedic($dniMedic, "OCUPADO");
