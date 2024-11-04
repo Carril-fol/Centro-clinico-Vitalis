@@ -6,34 +6,76 @@
     align-items: center;
 }
 
-.formulario-turno-creacion {
+.form-turn-creation {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    width: 400px;
-    height: max-content;
-    padding: 15px;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
     border: 1px solid #dbd8e3;
     border-radius: 10px;
-    box-shadow: 2px 2px #dbd8e3;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
 }
 
-.formulario-turno-creacion input {
-    padding: 10px;
-    margin-bottom: 30px;
-    width: 250px;
-    border: none;
-    border-bottom: 1px solid gray;
-    transition: 0.3s ease-in-out;
+.container-fields-form-turn {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
 }
-.formulario-turno-creacion input:focus {
+
+.form-header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #333;
+}
+
+.form-header img {
+    width: 80px;
+    height: auto;
+}
+
+.form-header h1 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.container-field {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+}
+
+.container-field label {
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.container-field input,
+.container-field select {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #dbd8e3;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s;
+}
+
+.container-field input:focus {
     outline: none;
     border: none;
     border-bottom: 1px solid var(--bg-dark-blue);
 }
 
-.formulario-turno-creacion button {
+.container-form-button-submit {
+    display: flex;
+    justify-content: center;
+}
+
+.submit-button {
     margin-top: 20px;
     padding: 12px;
     width: 100px;
@@ -45,27 +87,9 @@
     transition: 0.1s;
     cursor: pointer;
 }
-.formulario-turno-creacion button:hover {
+
+.submit-button:hover {
     color: var(--bg-dark-blue);
     border: 2px solid var(--bg-dark-blue);
     background: var(--bg-white);
-}
-
-.formulario-turno-creacion select {
-    padding: 10px;
-    margin-bottom: 30px;
-    width: 250px;
-    border: none;
-    border-bottom: 1px solid gray;
-    transition: 0.3s ease-in-out;
-}
-
-.formulario-turno-creacion div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.formulario-turno-creacion div img { 
-    width: 100px;
-    height: 100px;
 }
