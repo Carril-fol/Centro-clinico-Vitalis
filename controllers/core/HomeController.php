@@ -4,10 +4,20 @@ require_once 'Controller.php';
 
 class HomeController extends Controller
 {
-    public function rolFromUser()
+    public function getRolFromUser()
     {
         $cookieRol = strtolower(json_decode($_COOKIE["userRol"], true)['data']);
         return $cookieRol;
+    }
+
+    public function validateRolFromUser($userRolInCookies, $userRolValid)
+    {
+        if ($userRolInCookies != $userRolValid) {
+            header("Location: ../../views/core/home.php");
+            exit();
+        } else {
+            return false;
+        }
     }
 
     public function hasAccessTokenInCookies()
