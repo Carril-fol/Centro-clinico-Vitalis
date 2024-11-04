@@ -1,38 +1,42 @@
 <?php
 require_once  __DIR__ . '/../config.php';
-require_once __DIR__ . '/../models/User.php';
 
 class Patient
 {
     private $db;
-    private $userModel;
 
     public function __construct()
     {
         $this->db = (new Database())->connection();
-        $this->userModel = new User;
     }
 
     public function createPatient(int $dni)
     {
-        $insertQuery = "INSERT INTO paciente (dni) 
-            VALUES (:dni)";
-        $stmt = $this->db->prepare($insertQuery);
-        $stmt->bindParam(':dni', $dni, PDO::PARAM_INT);
-        $resultQuery = $stmt->execute();
+        $paramsQuery = [":dni" => $dni];
+        $insertQuery = "INSERT INTO paciente (dni) VALUES (:dni)";
+        $resultQuery = $this->db->prepare($insertQuery);
+        $resultQuery->execute($paramsQuery);
         return $resultQuery;
     }
 
     public function getPatientByDni($dni)
     {
-        $idUser = $this->userModel->getDataFromUserByDni($dni);
+        $paramsQuery = [":dni" => $dni];
         $selectQuery = "SELECT * FROM paciente WHERE dni = :dni";
-        $stmt = $this->db->prepare($selectQuery);
-        $stmt->bindParam(':dni', $dni, PDO::PARAM_INT);
-        $resultQuery = $stmt->execute();
-        return $resultQuery;
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute($paramsQuery);
+        $row = $resultQuery->fetch(PDO::FETCH_ASSOC);
+        return $row;
     }
 
+    public function getTurnsFromPatientByDni($dni)
+    {
+        $paramsQuery = [":dni" => $dni];
+        $selectQuery = "SELECT * FROM turno WHERE dni_paciente = :dni";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute($paramsQuery);
+        $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
 }
-
 ?>
