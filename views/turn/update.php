@@ -16,15 +16,16 @@ $homeController->hasAccessTokenInCookies();
     <title>Centro Clinico Vitalis</title>
     <link rel="stylesheet" href="../../css/App.css">
     <link rel="stylesheet" href="../../css/turn/Turn.css">
+    <link rel="stylesheet" href="../../css/core/Core.css">
     <link rel="shortcut icon" href="../../assets/images/logo.webp" type="image/x-icon">
     </title>
 </head>
 <body>
-    <?php include("../../components/common/headerLogged.html"); ?>
+    <?php include "../../components/common/headerLogged.php"; ?>
     <section class="section-turn">
         <div>
             <?php $homeController->errorInSession(); ?>
-            <?php include("../../components/turns/forms/TurnFormUpdateComponent.php"); ?>
+            <?php include "../../components/turns/forms/TurnFormUpdateComponent.php"; ?>
         </div>
     </section>
 </body>
