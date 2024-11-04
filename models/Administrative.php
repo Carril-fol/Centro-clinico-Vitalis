@@ -41,5 +41,20 @@ class Administrative
         $row = $resultQuery->fetch(PDO::FETCH_ASSOC);
         return $row;
     }
+
+    public function getTurnsRequested()
+    {
+        $selectQuery = "SELECT * FROM turnos_solicitados WHERE estado = 'SOLICITADO'";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute();
+        return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTurnsPending()
+    {
+        $selectQuery = "SELECT * FROM turno WHERE estado = 'PENDIENTE'";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute();
+        return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
-?>
