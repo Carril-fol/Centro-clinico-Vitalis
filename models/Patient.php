@@ -29,14 +29,25 @@ class Patient
         return $row;
     }
 
-    public function getTurnsFromPatientByDni($dni)
+    public function getTurnsRequestedFromPatientByDni($dni)
     {
         $paramsQuery = [":dni" => $dni];
-        $selectQuery = "SELECT * FROM turno WHERE dni_paciente = :dni";
+        $selectQuery = "SELECT * FROM turnos_solicitados WHERE dni_paciente = :dni";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
         $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
         return $rows;
     }
+
+    public function getTurnsCanceledOrCompletedFromPatientByDni($dni)
+    {
+        $paramsQuery = [":dni" => $dni];
+        $selectQuery = "SELECT * FROM turno WHERE dni_paciente = :dni AND estado in ('CANCELADO', 'COMPLETADO')";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute($paramsQuery);
+        $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
+    
 }
 ?>
