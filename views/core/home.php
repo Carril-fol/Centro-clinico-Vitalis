@@ -5,10 +5,11 @@ $homeController = new HomeController();
 
 $homeController->hasAccessTokenInCookies();
 
-$rol = $homeController->rolFromUser();
+$rol = $homeController->getRolFromUser();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,6 +31,7 @@ $rol = $homeController->rolFromUser();
                     require_once("../../components/turns/table/medics/TurnTableComponentMedic.php");
                     break;
                 case "paciente":
+                    require_once("../../components/patient/table/TurnTableComponentPatient.php");
                     break;
             }
             ?>
