@@ -4,8 +4,8 @@ include_once "../../controllers/core/HomeController.php";
 $homeController = new HomeController();
 
 $homeController->hasAccessTokenInCookies();
-$rolUser = $homeController->rolFromUser();
-$validRolUser = $homeController->redirectIfRolFromUserIsNotValid($rolUser, "paciente");
+$rolUser = $homeController->getRolFromUser();
+$validRolUser = $homeController->validateRolFromUser($rolUser, "paciente");
 ?>
 <!DOCTYPE html>
 <html lang="en">
