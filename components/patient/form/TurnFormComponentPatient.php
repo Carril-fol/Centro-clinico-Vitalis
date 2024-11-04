@@ -10,13 +10,13 @@ function optionsFormated()
     if (empty($specialities)) {
         echo "<option value=''>No hay especialidades disponibles.</option>";
     } else {
-    foreach ($specialities as $row):
-        ?>
-        <option value='<?= htmlspecialchars($row['especialidad']); ?>'>
-            <?= htmlspecialchars($row['especialidad']); ?>
-        </option>
-        <?php
-    endforeach;
+        foreach ($specialities as $row):
+?>
+            <option value='<?= htmlspecialchars($row['especialidad']); ?>'>
+                <?= htmlspecialchars($row['especialidad']); ?>
+            </option>
+<?php
+        endforeach;
     }
 }
 ?>
@@ -44,7 +44,7 @@ function optionsFormated()
             </select>
         </div>
         <div class="container-form-button-submit">
-            <button type="submit" class="submit-button">Crear</button>
+            <button type="submit" class="submit-button">Solicitar</button>
         </div>
     </div>
 </form>
