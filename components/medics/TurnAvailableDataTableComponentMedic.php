@@ -17,13 +17,10 @@ $turns = $medicController->showAllTurnAvailableFromMedic();
             <td>
                 <div class='container-buttons-table-aside'>
                     <a href='../../controllers/medic/MedicController.php?action=update&id=<?php echo $turn['id']; ?>'>
-                        <button class='table-button-update' type='button'>Completar</button>
+                        <button class='table-button-complete' type='button'>Completar</button>
                     </a>
                     <a href='../../views/turn/update.php?action=update&id=<?php echo $turn['id']; ?>'>
                         <button class='table-button-update' type='button'>Editar</button>
-                    </a>
-                    <a href='../../controllers/turn/TurnController.php?action=delete&id=<?php echo $turn['id']; ?>'>
-                        <button class='table-button-delete' type='button'>Eliminar</button>
                     </a>
                 </div>
             </td>
