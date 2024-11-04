@@ -25,10 +25,10 @@ $rol = $homeController->getRolFromUser();
             <?php
             switch ($rol) {
                 case "administrativo":
-                    require_once("../../components/turns/table/administrative/TurnTableComponent.php");
+                    require_once "../../components/administrative/TurnContainerComponent.php";
                     break;
                 case "médico":
-                    require_once("../../components/turns/table/medics/TurnTableComponentMedic.php");
+                    require_once("../../components/medics/TurnTableComponentMedic.php");
                     break;
                 case "paciente":
                     require_once("../../components/patient/table/TurnTableComponentPatient.php");
