@@ -2,23 +2,22 @@
 require_once '../../controllers/turn/TurnController.php';
 
 $turnController = new TurnController();
+$specialities = $turnController->medicModel->getSpecialitiesAvailable();
+$turnData = $turnController->detailTurn();
 
-function optionsFormated()
+function optionsFormated($turnData, $specialities)
 {
-    global $turnController;
-    $specialities = $turnController->medicModel->getSpecialitiesAvailable();
-    $turnData = $turnController->detailTurn();
     ?>
-    <option value='<?php echo htmlspecialchars($turnData['especialidad']); ?>' selected>
-        <?php echo htmlspecialchars($turnData['especialidad']); ?>
-    </option>
+        <option value='<?php echo htmlspecialchars($turnData['especialidad']); ?>' selected>
+            <?php echo htmlspecialchars($turnData['especialidad']); ?>
+        </option>
     <?php
     foreach ($specialities as $row) {
-        ?>
-            <option value='<?php echo htmlspecialchars($row['especialidad']); ?>'>
-                <?php echo htmlspecialchars($row['especialidad']); ?>
-            </option>
-        <?php
+    ?>
+        <option value='<?php echo htmlspecialchars($row['especialidad']); ?>'>
+            <?php echo htmlspecialchars($row['especialidad']); ?>
+        </option>
+    <?php
     }
 }
 ?>
@@ -47,11 +46,11 @@ function optionsFormated()
             <label for="speciality">Especialidad</label>
             <select id="speciality" name="speciality" required>
                 <option value="" disabled selected>Selecciona una especialidad</option>
-                <?php optionsFormated($specialities); ?>
+                <?php optionsFormated($turnData, $specialities); ?>
             </select>
         </div>
         <div class="container-form-button-submit">
-            <button type="submit" class="submit-button">Crear</button>
+            <button type="submit" class="submit-button">Actualizar</button>
         </div>
     </div>
 </form>
