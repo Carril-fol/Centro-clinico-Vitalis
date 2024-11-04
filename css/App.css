@@ -1,15 +1,19 @@
 /* Root */
 :root {
     font-family: "Montserrat", sans-serif;
-    --bg-sky-blue: #2badc8;
+    --bg-sky-blue: #2196F3;
     --bg-blue: #2683ba;
+    --bg-green: #4CAF50;
+    --bg-green-darker: #45a049;
     --bg-dark-blue: #185076;
     --bg-ocean-blue: #0c283a;
     --bg-dark: #060609;
     --bg-gray: #71787b;
+    --bg-gray-ligth: #efefef;
     --bg-whitish-gray: #e2e2e2;
     --bg-white: #ffff;
-    --bg-red: red;
+    --bg-red: #f44336;
+    --bg-red-darker: #e53935;
     --gradient-white-to-gray: radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%);
 
 }

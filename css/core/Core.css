@@ -37,7 +37,7 @@
 .content-table {
     border-collapse: collapse;
     font-size: 0.9em;
-    min-width: 400px;
+    min-width: 100%;
     overflow: hidden;
     font-weight: bold;
     box-shadow: 0 0 20px 0 var(--bg-whitish-gray);
@@ -67,45 +67,70 @@
 }
 
 .container-buttons-table-aside {
+    display: flex;
     padding: 10px;
     font-size: 0;
+    gap: 5px;
 }
 
 .table-button-delete {
-    padding: 12px;
-    font-size: medium;
-    border: 1px solid var(--bg-white);
-    font-weight: bold;
-    border-radius: 15px;
-    color: var(--bg-whitish-gray);
-    background: var(--bg-red);
-    transition: 0.1s;
+    background-color: var(--bg-red);
+    color: var(--bg-white);
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s ease;
 }
 
 .table-button-delete:hover {
-    color: var(--bg-red);
-    border: 1px solid var(--bg-red);
-    background: var(--bg-white);
+    background: var(--bg-red-darker);
 }
 
 .table-button-update {
-    padding: 12px;
-    font-size: medium;
-    border: 1px solid var(--bg-white);
-    font-weight: bold;
-    border-radius: 15px;
-    color: var(--bg-whitish-gray);
-    background: var(--bg-ocean-blue);
-    transition: 0.1s;
+    background-color: var(--bg-sky-blue);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    margin-right: 10px;
+    font-size: 16px;
+    transition: 0.3s ease;
 }
 
 .table-button-update:hover {
-    color: var(--bg-ocean-blue);
-    border: 1px solid var(--bg-ocean-blue);
-    background: var(--bg-white);
+    background: #1b90f0;
+}
+
+.table-button-complete {
+    background-color: var(--bg-green);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s ease;
+}
+
+.table-button-complete:hover {
+    background-color: var(--bg-green-darker);
+}
+
+.table-button-no-complete {
+    background-color: var(--bg-red);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s ease;
+}
+
+.table-button-no-complete:hover {
+    background-color: var(--bg-red-darker);
 }
 
 .container-table-button-top {
@@ -124,6 +149,7 @@
 .list-container-buttons {
     display: flex;
     list-style: none;
+    gap: 5px;
 }
 
 .list-container-buttons li {
@@ -147,11 +173,6 @@
     transition: 0.3s;
 }
 
-.actual-turns-btn {
-    margin-left: 5px;
-    margin-right: 5px;
-}
-
 .table-button-add img,
 .add-personal img {
     margin-right: 8px;
@@ -164,7 +185,7 @@
 .history-turns-btn:hover,
 .actual-turns-btn:hover {
     border: 1px solid black;
-    background-color: #efefef;
+    background-color: #ffffff;
 }
 
 .logoutbtn {
@@ -180,18 +201,10 @@
 }
 
 .logoutbtn:hover {
-    background-color: #efefef;
+    background-color: var(--bg-gray-ligth);
 }
 
 .logoutbtn img {
     max-width: 15px;
     max-height: 15px;
-}
-
-.show {
-    display: block;
-}
-
-.unshow {
-    display: none;
 }
