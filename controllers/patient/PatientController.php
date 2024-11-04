@@ -61,7 +61,7 @@ class PatientController extends Controller
 }
 
 $controller = new PatientController();
-$action = $controller->getActionInUrl();
+$action = strtoupper($controller->getActionInUrl());
 
 switch ($action) {
     case "CREATE":
