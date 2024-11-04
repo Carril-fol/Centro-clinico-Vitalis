@@ -1,12 +1,11 @@
 <?php
-// Importes
 include("../../controllers/core/HomeController.php");
 
-// Instancia de controlador
 $homeController = new HomeController();
 
-// Llamado de función del controlador
 $homeController->hasAccessTokenInCookies();
+$rolFromUser = $homeController->getRolFromUser();
+$validateRolFromUser = $homeController->validateRolFromUser($rolFromUser, "administrativo");
 ?>
 <!DOCTYPE html>
 <html lang="en">
