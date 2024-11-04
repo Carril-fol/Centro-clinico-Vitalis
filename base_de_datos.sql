@@ -47,3 +47,13 @@ CREATE TABLE turno (
     FOREIGN KEY (dni_medico) REFERENCES medico(dni),
     FOREIGN KEY (dni_paciente) REFERENCES paciente(dni)
 )
+
+CREATE TABLE turnos_solicitados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    dni_paciente INT,
+    fecha_atencion DATE,
+    fecha_creacion DATE,
+    horario TIME,
+    especialidad VARCHAR(255),
+    estado VARCHAR(255),
+    FOREIGN KEY (dni_paciente) REFERENCES paciente(dni))
