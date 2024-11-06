@@ -22,6 +22,17 @@ $turns = $medicController->showAllTurnAvailableFromMedic();
                     <a href='../../views/turn/update.php?action=update&id=<?php echo $turn['id']; ?>'>
                         <button class='table-button-update' type='button'>Editar</button>
                     </a>
+
+                    <?php 
+                        $dni = $turn["dni_paciente"];
+                        $paciente = new User();
+                        $datos = $paciente->getDataFromUserByDni($dni);
+
+                    ?>
+                    <a href="./../../bajarPdf.php?n=<?php echo $datos['nombre'];?>&a=<?php echo $datos['apellido'];?>&dni=<?php echo($turn['dni_paciente'])?>&fa=<?php echo($turn['fecha_atencion'])?>&fc=<?php echo($turn['fecha_creacion'])?>&h=<?php echo($turn['horario'])?>&d=<?php echo($turn['fecha_atencion'])?>" target="_blank" style="padding: 5px; background-color: #F90909; border-radius: 5px;" download >
+                        <img src="../../assets/icons/pdf-file.svg" alt="pdf file" width="25px">
+                    </a>
+
                 </div>
             </td>
         </tr>
