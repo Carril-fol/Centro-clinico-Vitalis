@@ -1,6 +1,5 @@
 <?php
 require_once "../../models/Patient.php";
-require_once "../../models/Turn.php";
 require_once "../../models/TurnRequested.php";
 require_once "../../models/Medic.php";
 require_once "../../controllers/core/Controller.php";
@@ -8,13 +7,11 @@ require_once "../../controllers/core/Controller.php";
 class PatientController extends Controller
 {
     private $patientModel;
-    private $turnModel;
     private $turnRequestedModel;
 
     function __construct()
     {
         $this->patientModel = new Patient();
-        $this->turnModel = new Turn();
         $this->turnRequestedModel = new TurnRequested();
     }
 
