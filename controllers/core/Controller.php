@@ -18,8 +18,7 @@ class Controller
 
     private function sanitizeUrl($url)
     {
-        $urlParsed = parse_url($url);
-        return $urlParsed;
+        return parse_url($url);
     }
 
     public function getParamsUrl($url)
@@ -63,7 +62,6 @@ class Controller
     public function getDniFromToken()
     {
         $dataInToken = json_decode($_COOKIE['accessToken'], true)['data'];
-        $dni = $dataInToken['dni'];
-        return $dni;
+        return $dataInToken['dni'];
     }
 }
