@@ -101,6 +101,15 @@ class Turn
     {
         $this->status = $status;
     }
+    
+    public function existsTurnByDni($dniPatient)
+    {
+        $paramsQuery = [":dni" => $dniPatient];
+        $selectQuery = "SELECT * FROM turno WHERE dni_paciente = :dni AND estado IN ('PENDIENTE', 'CONFIRMADO')";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute($paramsQuery);
+        return $resultQuery->rowCount() > 0;
+    }
 
     public function createTurn()
     {
@@ -136,9 +145,7 @@ class Turn
 
     public function getAllTurnsAvailable()
     {
-        $selectQuery = "SELECT *
-                        FROM turno
-                        WHERE estado = 'PENDIENTE'";
+        $selectQuery = "SELECT * FROM turno WHERE estado = 'PENDIENTE'";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute();
         $rows = $resultQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -177,13 +184,10 @@ class Turn
     public function detailTurnById()
     {
         $paramsQuery = [":id" => $this->id];
-        $selectQuery = "SELECT *
-                        FROM turno
-                        WHERE id = :id";
+        $selectQuery = "SELECT * FROM turno WHERE id = :id";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
-        $row = $resultQuery->fetch(PDO::FETCH_ASSOC);
-        return $row;
+        return $resultQuery->fetch(PDO::FETCH_ASSOC);
     }
 
     public function updateStatusTurnById()
