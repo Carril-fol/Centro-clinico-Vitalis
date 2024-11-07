@@ -9,7 +9,6 @@ $rol = $homeController->getRolFromUser();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +21,7 @@ $rol = $homeController->getRolFromUser();
     <?php include("../../components/common/headerLogged.php"); ?>
     <section class="seccion-home">
         <div class="container-table">
+            <?php $homeController->errorInSession(); ?>
             <?php
             switch ($rol) {
                 case "administrativo":
