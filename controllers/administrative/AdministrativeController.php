@@ -2,6 +2,7 @@
 require_once "../../models/Administrative.php";
 require_once "../../models/TurnRequested.php";
 require_once "../../models/Medic.php";
+require_once "../../models/Turn.php";
 require_once "../../controllers/core/Controller.php";
 
 class AdministrativeController extends Controller
