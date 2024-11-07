@@ -21,7 +21,7 @@ class TurnRequested extends Turn
     public function existsTurnRequestedByDni($dniPatient)
     {
         $paramsQuery = [":dni" => $dniPatient];
-        $selectQuery = "SELECT * FROM turnos_solicitados WHERE dni_paciente = :dni";
+        $selectQuery = "SELECT * FROM turnos_solicitados WHERE dni_paciente = :dni AND estado IN ('CONFIRMADO', 'SOLICITADO')";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
         return $resultQuery->rowCount() > 0;
