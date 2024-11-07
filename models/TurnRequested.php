@@ -18,6 +18,15 @@ class TurnRequested extends Turn
         $this->speciality = $speciality;
     }
 
+    public function existsTurnRequestedByDni($dniPatient)
+    {
+        $paramsQuery = [":dni" => $dniPatient];
+        $selectQuery = "SELECT * FROM turnos_solicitados WHERE dni_paciente = :dni";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute($paramsQuery);
+        return $resultQuery->rowCount() > 0;
+    }
+
     public function createTurnRequested()
     {
         $paramsQuery = [
