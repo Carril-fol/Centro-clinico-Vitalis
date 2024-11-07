@@ -23,8 +23,10 @@ $validRolUser = $homeController->validateRolFromUser($rolUser, "paciente");
     <?php include "../../components/common/headerLogged.php"; ?>
     <section class="section-turn">
         <div>
+            <?php $homeController->errorInSession(); ?>
             <?php include "../../components/patient/form/TurnFormComponentPatient.php"; ?>
         </div>
     </section>
 </body>
 </html>
+<script src="../../js/index.js"></script>
