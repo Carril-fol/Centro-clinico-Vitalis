@@ -1,17 +1,20 @@
 <?php
 require_once '../../models/Turn.php';
 require_once '../../models/Medic.php';
+require_once '../../models/TurnRequested.php';
 require_once '../../controllers/core/Controller.php';
 
 class TurnController extends Controller
 {
     public $turnModel;
+    public $turnRequestedModel;
     public $medicModel;
 
     function __construct()
     {
         $this->turnModel = new Turn();
         $this->medicModel = new Medic();
+        $this->turnRequestedModel = new TurnRequested();
     }
 
     private function redirectToHome()
@@ -37,6 +40,22 @@ class TurnController extends Controller
         return $medics[0];
     }
 
+    private function alreadyExistsTurnRequestedFromPatient($dniPatient)
+    {
+        $turnAlreadyExists =  $this->turnRequestedModel->existsTurnRequestedByDni($dniPatient);
+        if ($turnAlreadyExists) {
+            throw new Exception("El paciente ya tiene un turno solicitado.");
+        }
+    }
+
+    private function alreadyExistsTurnFromPatient($dniPatient)
+    {
+        $turnAlreadyExists =  $this->turnModel->existsTurnByDni($dniPatient);
+        if ($turnAlreadyExists) {
+            throw new Exception("El paciente ya se encuentra con un turno, espere a que termine este turno o eliminelo si es un error.");
+        }
+    }
+
     public function getDataFromForm()
     {
         return [
@@ -49,16 +68,22 @@ class TurnController extends Controller
 
     public function createTurn($turnData)
     {
-        $dniMedic = $this->getMedicForTurn($turnData['speciality'])['dni'];
-        $this->medicModel->changeStatusMedic($dniMedic, "OCUPADO");
-
-        $this->turnModel->setStatus("PENDIENTE");
-        $this->turnModel->setDniPatient($turnData['dniPatient']);
-        $this->turnModel->setDniMedic($dniMedic);
-        $this->turnModel->setDateAtention($turnData['dateAtention']);
-        $this->turnModel->setTurnTime($turnData['turnTime']);
-        $this->turnModel->setSpeciality($turnData['speciality']);
-        $this->turnModel->createTurn();
+        try {
+            $this->alreadyExistsTurnRequestedFromPatient($turnData["dniPatient"]);
+            $this->alreadyExistsTurnFromPatient($turnData["dniPatient"]);
+            
+            $dniMedic = $this->getMedicForTurn($turnData['speciality'])['dni'];
+            $this->medicModel->changeStatusMedic($dniMedic, "OCUPADO");
+            $this->turnModel->setStatus("PENDIENTE");
+            $this->turnModel->setDniPatient($turnData['dniPatient']);
+            $this->turnModel->setDniMedic($dniMedic);
+            $this->turnModel->setDateAtention($turnData['dateAtention']);
+            $this->turnModel->setTurnTime($turnData['turnTime']);
+            $this->turnModel->setSpeciality($turnData['speciality']);
+            $this->turnModel->createTurn();
+        } catch (Exception $error) {
+            $this->handleError($error, "core", "home");
+        }
     }
 
     private function deleteTurnById($id)
@@ -114,6 +139,9 @@ class TurnController extends Controller
     {
         try {
             $id = $this->getIdUrl();
+            $this->turnModel->setId($id);
+            $turnData = $this->detailTurn();
+            $this->medicModel->changeStatusMedic($turnData['dni_medico'], "DESOCUPADO");
             $this->deleteTurnById($id);
             $this->redirectToHome();
         } catch (Exception $error) {
@@ -133,7 +161,7 @@ class TurnController extends Controller
             $id = $this->getIdUrl();
             if ($requestMethod == "GET") {
                 return $this->detailTurn();
-            } else if ($requestMethod == "POST") {
+            } elseif ($requestMethod == "POST") {
                 $turnFormData = $this->getDataFromForm();
                 $this->actualizeTurn($turnFormData, $id);
                 $this->redirectToHome();
