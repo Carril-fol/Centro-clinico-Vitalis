@@ -34,6 +34,14 @@ class PatientController extends Controller
         ];
     }
 
+    private function alreadyExistsTurnRequestedFromPatient($dniPatient)
+    {
+        $turnAlreadyExists =  $this->turnRequestedModel->existsTurnRequestedByDni($dniPatient);
+        if ($turnAlreadyExists) {
+            throw new Exception("El paciente ya tiene un turno solicitado.");
+        }
+    }
+
     public function showTurnRequestedFromPatient()
     {
         $dniInCookies = $this->getDniFromToken();
@@ -48,15 +56,19 @@ class PatientController extends Controller
 
     public function registerTurnPatient()
     {
-        $data = $this->getDataFromFormPatient();
-
-        $this->turnModel->setStatus("SOLICITADO");
-        $this->turnModel->setDniPatient($data['dniPatient']);
-        $this->turnModel->setDateAtention($data['dateAtention']);
-        $this->turnModel->setTurnTime($data['turnTime']);
-        $this->turnModel->setSpeciality($data['speciality']);
-        $this->turnRequestedModel->createTurnRequested();
-        $this->redirectToHome();
+        try {
+            $data = $this->getDataFromFormPatient();
+            $this->alreadyExistsTurnRequestedFromPatient($data["dniPatient"]);
+            $this->turnRequestedModel->setStatus("SOLICITADO");
+            $this->turnRequestedModel->setDniPatient($data['dniPatient']);
+            $this->turnRequestedModel->setDateAtention($data['dateAtention']);
+            $this->turnRequestedModel->setTurnTime($data['turnTime']);
+            $this->turnRequestedModel->setSpeciality($data['speciality']);
+            $this->turnRequestedModel->createTurnRequested();
+            $this->redirectToHome();
+        } catch (Exception $error) {
+            $this->handleError($error, "patient", "create");
+        }
     }
 }
 
