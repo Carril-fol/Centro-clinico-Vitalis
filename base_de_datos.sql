@@ -46,7 +46,7 @@ CREATE TABLE turno (
     estado VARCHAR(255),
     FOREIGN KEY (dni_medico) REFERENCES medico(dni),
     FOREIGN KEY (dni_paciente) REFERENCES paciente(dni)
-)
+);
 
 CREATE TABLE turnos_solicitados (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -56,7 +56,8 @@ CREATE TABLE turnos_solicitados (
     horario TIME,
     especialidad VARCHAR(255),
     estado VARCHAR(255),
-    FOREIGN KEY (dni_paciente) REFERENCES paciente(dni))
+    FOREIGN KEY (dni_paciente) REFERENCES paciente(dni)
+);
 
 
 INSERT INTO usuario (dni, nombre, apellido, email, contraseña, estado, esSuperUsuario, esStaff) VALUES (99999999, "ADMIN", "ADMIN", "admin@admin.com", "$2a$12$7MIHNQlTUnLAT/xXAWiPdOHRlFqWcLIjLvOqcGRNR5QR1OLlTCfV.", "ALTA", 1, 1);
