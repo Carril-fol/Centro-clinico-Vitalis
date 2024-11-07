@@ -1,4 +1,3 @@
-/* Root */
 :root {
     font-family: "Montserrat", sans-serif;
     --bg-sky-blue: #2196F3;
@@ -14,6 +13,8 @@
     --bg-white: #ffff;
     --bg-red: #f44336;
     --bg-red-darker: #e53935;
+    --bg-red-error-darker: #721c24;
+    --bg-red-white-error: #f8d7da;
     --gradient-white-to-gray: radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%);
 
 }
@@ -446,4 +447,30 @@ html {
     min-width: 280px;
     max-width: 600px;
     margin: 0 20px;
+}
+
+.error-msg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-red-white-error);
+    color: var(--bg-red-error-darker);
+    border: 1px solid var(--bg-red-white-error);
+    padding: 20px 30px;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+.error-msg h2 {
+    font-size: 24px;
+    margin: 0 15px 0 0;
+}
+
+.error-msg p {
+    font-size: 16px;
+    margin: 0;
+    padding-left: 10px;
 }
