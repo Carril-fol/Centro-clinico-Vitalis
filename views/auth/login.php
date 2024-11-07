@@ -18,6 +18,7 @@
 <body>
     <?php include("../../components/common/header.html"); ?>
     <section class="section-formulario-login">
+        <?php $homeController->errorInSession(); ?>
         <form class="formulario-login" action="../../controllers/auth/LoginController.php" method="POST">
             <div class="formulario-login-logo-titulo">
                 <img src="../../assets/images/logo.webp" alt="Logo"/>
@@ -29,7 +30,6 @@
             <div>
                 <input type="password" name="password" placeholder="Contraseña" required/>
             </div>
-            <?php $homeController->errorInSession(); ?>
             <div>
                 <button type="submit">Iniciar Sesión</button>
             </div>
