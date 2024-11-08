@@ -22,7 +22,8 @@ class LogoutController extends Controller
     {
         try {
             $this->isTokenInCookies();
-            setcookie("accessToken", '', time() - 1, "/");
+            setcookie("accessToken", "", time() - 1, "/");
+            setcookie("userRol", "", time() - 1, "/");
             $this->redirectToLogin();
         } catch (Exception $error) {
             $this->handleError($error, "auth", "login");
