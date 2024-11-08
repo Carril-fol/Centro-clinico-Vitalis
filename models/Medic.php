@@ -52,9 +52,7 @@ class Medic
 
     public function changeStatusMedic($dniMedic, $status) {
         $paramsQuery = [":dniMedic" => $dniMedic, ":status" => $status];
-        $selectQuery = "UPDATE medico 
-                        SET estado = :status 
-                        WHERE dni = :dniMedic";
+        $selectQuery = "UPDATE medico SET estado = :status WHERE dni = :dniMedic";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
         return $resultQuery->rowCount() > 0;
@@ -68,10 +66,7 @@ class Medic
     }
 
     public function getTurnsForMedicByDni($dniMedic, $status) {
-        $paramsQuery = [
-            ":dni_medico" => $dniMedic,
-            ":estado" => $status
-        ];
+        $paramsQuery = [":dni_medico" => $dniMedic, ":estado" => $status];
         $selectQuery = "SELECT * FROM turno WHERE dni_medico = :dni_medico AND estado = :estado";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
@@ -79,5 +74,4 @@ class Medic
     }
 
 }
-
 ?>
