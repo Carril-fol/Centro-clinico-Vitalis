@@ -27,6 +27,15 @@ class TurnRequested extends Turn
         return $resultQuery->rowCount() > 0;
     }
 
+    public function detailTurnRequestedConfirmedFromPatientByDni($dniPatient)
+    {
+        $paramsQuery = [":dni" => $dniPatient];
+        $selectQuery = "SELECT * FROM turnos_solicitados WHERE dni_paciente = :dni AND estado IN ('COMPLETADO', 'CONFIRMADO')";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute($paramsQuery);
+        return $resultQuery->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function createTurnRequested()
     {
         $paramsQuery = [
