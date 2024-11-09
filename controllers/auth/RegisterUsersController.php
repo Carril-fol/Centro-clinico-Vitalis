@@ -25,6 +25,7 @@ try {
         throw new Exception('Error al crear el usuario.');
     }
 
+    $userModel->enviarCorreoBienvenida($email, $firstName);
     $getUserCreated = $userModel->getDataFromUserByDni($dni);
 
     switch ($occupation) {
@@ -50,8 +51,6 @@ try {
             $patientModel->createPatient($dni);
             break;
     }
-    // header(header: "Location: ../../views/core/home.php");   
-    $userModel->enviarCorreoBienvenida($email, $firstName);
     exit();
 } catch (Exception $e) {
     $_SESSION['error'] = $e->getMessage();
