@@ -1,5 +1,12 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 require_once  __DIR__ . '/../config.php';
+
+require '../../components/PHPMailer/Exception.php';
+require '../../components/PHPMailer/PHPMailer.php';
+require '../../components/PHPMailer/SMTP.php';
 
 class User
 {
@@ -90,34 +97,47 @@ class User
     }
 
     public function enviarCorreoBienvenida($clienteEmail, $clienteNombre) {
-        //Esta parte se tiene que cambiar por el correo de la empresa o un correo verdadro, para que no se lo detecte como posible spam o sea eliminado automaticamente
-        $emailFrom = "no-reply@clinicavitalis.com";
+        $mail = new PHPMailer(true);
 
-        $to = $clienteEmail;
-        $subject = "Bienvenido a Centro Clinico Vitalis";
-        $message = "
-        <html>
-        <head>
-            <title>Bienvenido a Centro Clinico Vitalis</title>
-        </head>
-        <body>
-            <h1>Hola, $clienteNombre!</h1>
-            <p>Gracias por registrarte en nuestro sistema. Estamos encantados de tenerte con nosotros.</p>
-        </body>
-        </html>
-        ";
-    
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    
-        $headers .= "From: $emailFrom" . "\r\n";
+        $correoEnviador = 'pruebas.zekki@gmail.com';
+        $contraseñaEnviador = 'mohkfnsntfxukfgx';
+        try {
+            //Configuraciones
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = $correoEnviador;                     //SMTP username
+            $mail->Password   = $contraseñaEnviador;                               //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
-        $enviado = mail($to, $subject, $message, $headers);
+            //Enviado y Receptor
+            $mail->setFrom($correoEnviador, 'Centro Clinico Veritas');
+            $mail->addAddress($clienteEmail);     //Add a recipient
 
-        if($enviado) { 
-            header(header: "Location: ../../views/core/confirm.php");
-        } else {
-            echo "Error al enviar el mensaje";
+            //Contenido
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->CharSet = 'UTF-8';   
+            $mail->Subject = 'Bienvenido a Centro Clinico Vitalis';
+            $message = "
+                        <html>
+                        <head>
+                            <title>Bienvenido a Centro Clinico Vitalis</title>
+                        </head>
+                        <body>
+                            <h2>Hola, $clienteNombre!</h2>
+                            <h3>Gracias por registrarte en nuestro sistema. Estamos encantados de tenerte con nosotros.</h3>
+                        </body>
+                        </html>
+                        ";
+            $mail->Body    = $message;
+            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+            $mail->send();
+            header(header: "Location: ../../views/core/confirm.php");   
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
     }
 }
