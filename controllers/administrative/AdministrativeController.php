@@ -18,12 +18,6 @@ class AdministrativeController extends Controller
         $this->medicModel = new Medic();
     }
 
-    private function redirectToHome()
-    {
-        header("Location: ../../views/core/home.php");
-        exit();
-    }
-
     private function getMedicForTurn($speciality)
     {
         $medics = $this->medicModel->getMedicsBySpeciality($speciality);
