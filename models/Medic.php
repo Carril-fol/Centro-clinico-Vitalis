@@ -73,5 +73,13 @@ class Medic
         return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getSpecialities()
+    {
+        $selectQuery = "SELECT DISTINCT especialidad FROM medico";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute();
+        return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
 ?>
