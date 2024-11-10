@@ -54,7 +54,7 @@ class Controller
     {
         session_start();
         if (isset($_SESSION['error'])) {
-            echo "<div class='error-msg' ><h2>Error</h2>" . "<p>" . $_SESSION['error'].  "</p>" . "</div>";
+            echo "<div class='error-msg' ><p>" . $_SESSION['error'].  "</p>" . "</div>";
             unset($_SESSION['error']);
         }
     }
