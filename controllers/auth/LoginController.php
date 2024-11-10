@@ -41,12 +41,6 @@ class LoginController extends Controller
         setcookie("userRol", json_encode($cookieData), $timeExp, "/");
     }
 
-    private function redirectToHome()
-    {
-        header("Location: ../../views/core/home.php");
-        exit();
-    }
-
     public function authenticate()
     {
         try {
