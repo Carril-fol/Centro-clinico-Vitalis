@@ -210,7 +210,7 @@
 }
 
 .select-dni {
-    width: 95px;                  /* Ocupa todo el ancho del contenedor */
+    width: 140px;                  /* Ocupa todo el ancho del contenedor */
     padding: 10px;                /* Espaciado interno */
     font-size: 16px;              /* Tamaño de fuente */
     color: #333;                  /* Color del texto */

@@ -18,6 +18,7 @@ $medicos = $administrativeController->mostrarDatosMedicos();
                 <div class='container-buttons-table-aside'>
                     <form method="POST" action="../../controllers/administrative/AdministrativeController.php?action=assing&id=<?php echo urldecode($turn["id"]) ?>">
                         <select class="select-dni" name="med" id="med">
+                            <option value="nada">Seleccionar DNI</option>
                             <?php foreach ($medicos as $medico):?>
                                 <option value="<?php echo $medico['dni'] ?>"><?php echo $medico['dni'] ?></option>
                             <?php endforeach; ?>
