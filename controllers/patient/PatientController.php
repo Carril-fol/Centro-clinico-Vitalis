@@ -1,6 +1,7 @@
 <?php
 require_once "../../models/Patient.php";
 require_once "../../models/TurnRequested.php";
+require_once "../../models/Turn.php";
 require_once "../../models/Medic.php";
 require_once "../../controllers/core/Controller.php";
 
@@ -8,17 +9,13 @@ class PatientController extends Controller
 {
     private $patientModel;
     private $turnRequestedModel;
+    private $turnModel;
 
     function __construct()
     {
         $this->patientModel = new Patient();
         $this->turnRequestedModel = new TurnRequested();
-    }
-
-    private function redirectToHome()
-    {
-        header("Location: ../../views/core/home.php");
-        exit();
+        $this->turnModel = new Turn();
     }
 
     private function getDataFromFormPatient()
@@ -39,6 +36,25 @@ class PatientController extends Controller
         }
     }
 
+    private function validateIfTimeAtentionIsAvailable($turnDay, $turnTimeActual)
+    {
+        $turnTimeActualFormatted = date("H:i:s", strtotime($turnTimeActual . ":00"));
+        $timeArray = [];
+        $turns = $this->turnModel->getAllTurnByDay($turnDay);
+        if ($turns == false) {
+            return true;
+        }
+        foreach ($turns as $turn) {
+            array_push($timeArray, $turn["horario"]);
+        }
+        foreach ($timeArray as $turnTime) {
+            if (strcmp($turnTimeActualFormatted, $turnTime) === 1) {
+                throw new Exception(("Ya existe un turno registrado para el día " . $turnDay . " a las " . $turnTimeActual . ". Por favor, seleccione una hora diferente."));
+            }
+        }
+        return true;
+    }
+
     public function showTurnRequestedFromPatient()
     {
         $dniInCookies = $this->getDniFromToken();
@@ -55,6 +71,7 @@ class PatientController extends Controller
     {
         try {
             $data = $this->getDataFromFormPatient();
+            $this->validateIfTimeAtentionIsAvailable($data["dateAtention"], $data["turnTime"]);
             $this->alreadyExistsTurnRequestedFromPatient($data["dniPatient"]);
             $this->turnRequestedModel->setStatus("SOLICITADO");
             $this->turnRequestedModel->setDniPatient($data['dniPatient']);
