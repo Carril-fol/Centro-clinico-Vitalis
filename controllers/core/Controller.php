@@ -64,4 +64,10 @@ class Controller
         $dataInToken = json_decode($_COOKIE['accessToken'], true)['data'];
         return $dataInToken['dni'];
     }
+
+    public function redirectToHome()
+    {
+        header("Location: ../../views/core/home.php");
+        exit();
+    }
 }
