@@ -210,4 +210,16 @@ class Turn
         $resultQuery->execute($paramsQuery);
         return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function verificarTurnoSimilar($fecha,$hora,$medico)
+    {
+        $paramsQuery = [':fecha' =>$fecha,':hora' =>$hora,':medico' =>$medico];
+        $selectQuery = "SELECT * FROM turno WHERE fecha_atencion = :fecha AND horario = :hora AND dni_medico = :medico";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute($paramsQuery);
+        if ($resultQuery->fetch()) {
+            return false;
+        }
+    
+        return true;
+    }
 }
