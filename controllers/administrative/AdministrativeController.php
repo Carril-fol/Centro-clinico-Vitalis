@@ -35,8 +35,9 @@ class AdministrativeController extends Controller
 
     private function creationTurnRequested($turnRequestedData)
     {
-        $dniMedic = $this->getMedicForTurn($turnRequestedData['especialidad'])['dni'];
-        $this->medicModel->changeStatusMedic($dniMedic, "OCUPADO");
+        // $dniMedic = $this->getMedicForTurn($turnRequestedData['especialidad'])['dni'];
+        $dniMedic = $_POST['med'];
+        // $this->medicModel->changeStatusMedic($dniMedic, "OCUPADO");
 
         $this->turnRequestedModel->setStatus("PENDIENTE");
         $this->turnRequestedModel->setDniPatient($turnRequestedData['dni_paciente']);
@@ -77,6 +78,10 @@ class AdministrativeController extends Controller
         } catch (Exception $error) {
             $this->handleError($error, "core", "home");
         }
+    }
+    public function mostrarDatosMedicos()
+    {
+        return $this->administrativeModel->obtenerDatosMedicos();
     }
 }
 

@@ -3,8 +3,10 @@ require_once '../../controllers/administrative/AdministrativeController.php';
 
 $administrativeController = new AdministrativeController();
 $turns = $administrativeController->showTurnRequested();
+$medicos = $administrativeController->mostrarDatosMedicos();
 ?>
 <?php if (!empty($turns)): ?>
+    
     <?php foreach ($turns as $turn): ?>
         <tr>
             <td><?php echo htmlspecialchars($turn["dni_paciente"]); ?></td>
@@ -15,6 +17,11 @@ $turns = $administrativeController->showTurnRequested();
             <td>
                 <div class='container-buttons-table-aside'>
                     <form method="POST" action="../../controllers/administrative/AdministrativeController.php?action=assing&id=<?php echo urldecode($turn["id"]) ?>">
+                        <select class="select-dni" name="med" id="med">
+                            <?php foreach ($medicos as $medico):?>
+                                <option value="<?php echo $medico['dni'] ?>"><?php echo $medico['dni'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
                         <button class='table-button-update' type='submit'>Relevar</button>
                     </form>
 

@@ -43,8 +43,8 @@ class Medic
     }
 
     public function getMedicsBySpeciality($speciality) {
-        $paramsQuery = [":speciality" => $speciality, ":status" => "DESOCUPADO"];
-        $selectQuery = "SELECT dni, especialidad FROM medico  WHERE estado = :status AND especialidad = :speciality";
+        $paramsQuery = [":speciality" => $speciality];
+        $selectQuery = "SELECT dni, especialidad FROM medico  WHERE especialidad = :speciality";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute($paramsQuery);
         return $resultQuery->fetchAll(PDO::FETCH_ASSOC);

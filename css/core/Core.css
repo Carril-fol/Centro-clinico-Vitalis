@@ -208,3 +208,27 @@
     max-width: 15px;
     max-height: 15px;
 }
+
+.select-dni {
+    width: 95px;                  /* Ocupa todo el ancho del contenedor */
+    padding: 10px;                /* Espaciado interno */
+    font-size: 16px;              /* Tamaño de fuente */
+    color: #333;                  /* Color del texto */
+    background-color: #f7f7f7;    /* Color de fondo */
+    border: 2px solid #ccc;       /* Borde */
+    border-radius: 5px;           /* Bordes redondeados */
+    appearance: none;             /* Oculta el icono por defecto en algunos navegadores */
+    margin-right: 5px;
+    }
+
+.select-dni:focus {
+    border-color: #007bff;        /* Color del borde al hacer foco */
+    outline: none;                /* Elimina el borde por defecto */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra para indicar foco */
+    }
+
+.select-dni:disabled {
+    background-color: #e9ecef;    /* Color de fondo cuando está deshabilitado */
+    color: #6c757d;               /* Color del texto cuando está deshabilitado */
+    cursor: not-allowed;          /* Cambia el cursor */
+    }
