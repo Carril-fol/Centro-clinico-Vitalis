@@ -1,26 +1,20 @@
 <?php
 require_once '../../models/Turn.php';
 require_once '../../models/Medic.php';
-require_once '../../models/TurnRequested.php';
+require_once 'TurnRequestedController.php';
 require_once '../../controllers/core/Controller.php';
 
 class TurnController extends Controller
 {
     public $turnModel;
-    public $turnRequestedModel;
+    public $turnRequestedController;
     public $medicModel;
 
     function __construct()
     {
         $this->turnModel = new Turn();
         $this->medicModel = new Medic();
-        $this->turnRequestedModel = new TurnRequested();
-    }
-
-    private function redirectToHome()
-    {
-        header("Location: ../../views/core/home.php");
-        exit();
+        $this->turnRequestedController = new TurnRequestedController();
     }
 
     private function redirectToEditTurn($error, $folder, $file, $id)
@@ -40,20 +34,31 @@ class TurnController extends Controller
         return $medics[0];
     }
 
-    private function alreadyExistsTurnRequestedFromPatient($dniPatient)
-    {
-        $turnAlreadyExists =  $this->turnRequestedModel->existsTurnRequestedByDni($dniPatient);
-        if ($turnAlreadyExists) {
-            throw new Exception("El paciente ya tiene un turno solicitado.");
-        }
-    }
-
     private function alreadyExistsTurnFromPatient($dniPatient)
     {
         $turnAlreadyExists =  $this->turnModel->existsTurnByDni($dniPatient);
         if ($turnAlreadyExists) {
             throw new Exception("El paciente ya se encuentra con un turno, espere a que termine este turno o eliminelo si es un error.");
         }
+    }
+
+    private function validateIfTimeAtentionIsAvailable($turnDay, $turnTimeActual)
+    {
+        $turnTimeActualFormatted = date("H:i:s", strtotime($turnTimeActual . ":00"));
+        $timeArray = [];
+        $turns = $this->turnModel->getAllTurnByDay($turnDay);
+        if ($turns == false) {
+            return true;
+        }
+        foreach ($turns as $turn) {
+            array_push($timeArray, $turn["horario"]);
+        }
+        foreach ($timeArray as $turnTime) {
+            if (strcmp($turnTimeActualFormatted, $turnTime) === 1) {
+                throw new Exception(("Ya existe un turno registrado para el día " . $turnDay . " a las " . $turnTimeActual . ". Por favor, seleccione una hora diferente."));
+            }
+        }
+        return true;
     }
 
     public function getDataFromForm()
@@ -69,9 +74,10 @@ class TurnController extends Controller
     public function createTurn($turnData)
     {
         try {
-            $this->alreadyExistsTurnRequestedFromPatient($turnData["dniPatient"]);
+            $this->turnRequestedController->alreadyExistsTurnRequestedFromPatient($turnData["dniPatient"]);
             $this->alreadyExistsTurnFromPatient($turnData["dniPatient"]);
-            
+            $this->validateIfTimeAtentionIsAvailable($turnData["dateAtention"], $turnData["turnTime"]);
+
             $dniMedic = $this->getMedicForTurn($turnData['speciality'])['dni'];
             $this->medicModel->changeStatusMedic($dniMedic, "OCUPADO");
             $this->turnModel->setStatus("PENDIENTE");
@@ -141,6 +147,7 @@ class TurnController extends Controller
             $id = $this->getIdUrl();
             $this->turnModel->setId($id);
             $turnData = $this->detailTurn();
+            $this->turnRequestedController->deleteTurnRequested($turnData["dni_paciente"]);
             $this->medicModel->changeStatusMedic($turnData['dni_medico'], "DESOCUPADO");
             $this->deleteTurnById($id);
             $this->redirectToHome();
