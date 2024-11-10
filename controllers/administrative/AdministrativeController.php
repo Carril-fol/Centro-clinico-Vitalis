@@ -32,7 +32,9 @@ class AdministrativeController extends Controller
         // $dniMedic = $this->getMedicForTurn($turnRequestedData['especialidad'])['dni'];
         $dniMedic = $_POST['med'];
         // $this->medicModel->changeStatusMedic($dniMedic, "OCUPADO");
-
+        if (!$this->turnRequestedModel->verificarTurnoSimilar($turnRequestedData['fecha_atencion'], $turnRequestedData['horario'], $dniMedic)) {
+            throw new Exception("Ya existe un turno asignado para este médico en la fecha y hora seleccionadas.");
+        }
         $this->turnRequestedModel->setStatus("PENDIENTE");
         $this->turnRequestedModel->setDniPatient($turnRequestedData['dni_paciente']);
         $this->turnRequestedModel->setDniMedic($dniMedic);
