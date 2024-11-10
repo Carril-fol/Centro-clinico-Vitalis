@@ -201,4 +201,13 @@ class Turn
         $resultQuery->execute($paramsQuery);
         return $resultQuery->rowCount();
     }
+
+    public function getAllTurnByDay($date)
+    {
+        $paramsQuery = [":date"=>$date];
+        $selectQuery = "SELECT * FROM turno WHERE fecha_atencion = :date AND estado = 'PENDIENTE'";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute($paramsQuery);
+        return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
