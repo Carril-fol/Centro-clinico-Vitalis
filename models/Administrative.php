@@ -57,4 +57,12 @@ class Administrative
         $resultQuery->execute();
         return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function obtenerDatosMedicos()
+    {
+        $selectQuery = "SELECT dni FROM medico";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute();
+        return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
