@@ -16,13 +16,7 @@ class MedicController extends Controller
         $this->turnModel = new Turn();
         $this->turnRequestedModel = new TurnRequested();
     }
-
-    private function redirectToHome()
-    {
-        header("Location: ../../views/core/home.php");
-        exit();
-    }
-
+    
     private function actualizeStatusTurnRequested($idTurnParent)
     {
         $this->turnModel->setId($idTurnParent);
