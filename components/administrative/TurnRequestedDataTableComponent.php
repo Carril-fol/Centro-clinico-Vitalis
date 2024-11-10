@@ -16,7 +16,7 @@ $medicos = $administrativeController->mostrarDatosMedicos();
             <td><?php echo htmlspecialchars($turn["estado"]); ?></td>
             <td>
                 <div class='container-buttons-table-aside'>
-                    <form method="POST" action="../../controllers/administrative/AdministrativeController.php?action=assing&id=<?php echo urldecode($turn["id"]) ?>">
+                    <form method="POST" action="../../controllers/administrative/AdministrativeController.php?action=assing&id=<?php echo urldecode($turn["id"]) ?>" onsubmit="return validateForm(this)">
                         <select class="select-dni" name="med" id="med">
                             <option value="nada">Seleccionar DNI</option>
                             <?php foreach ($medicos as $medico):?>
@@ -25,7 +25,6 @@ $medicos = $administrativeController->mostrarDatosMedicos();
                         </select>
                         <button class='table-button-update' type='submit'>Relevar</button>
                     </form>
-
                 </div>
             </td>
         </tr>
@@ -35,3 +34,14 @@ $medicos = $administrativeController->mostrarDatosMedicos();
         <td colspan="7">No hay turnos solicitados por los pacientes.</td>
     </tr>
 <?php endif; ?>
+
+<script>
+function validateForm(form) {
+    var select = form.querySelector('select[name="med"]');
+    if (select.value === "nada") {
+        alert("Por favor, seleccione un DNI.");
+        return false;
+    }
+    return true;
+}
+</script>
