@@ -36,11 +36,11 @@ class PatientController extends Controller
         }
     }
 
-    private function validateIfTimeAtentionIsAvailable($turnDay, $turnTimeActual)
+    private function validateIfTimeAtentionIsAvailableTurnRequested($turnDay, $turnTimeActual)
     {
         $turnTimeActualFormatted = date("H:i:s", strtotime($turnTimeActual . ":00"));
         $timeArray = [];
-        $turns = $this->turnModel->getAllTurnByDay($turnDay);
+        $turns = $this->turnRequestedModel->getAllTurnRequestedByDay($turnDay);
         if ($turns == false) {
             return true;
         }
@@ -48,7 +48,22 @@ class PatientController extends Controller
             array_push($timeArray, $turn["horario"]);
         }
         foreach ($timeArray as $turnTime) {
-            if (strcmp($turnTimeActualFormatted, $turnTime) === 1) {
+            if (strcmp($turnTimeActualFormatted, $turnTime) === 0) {
+                throw new Exception(("Ya existe un turno registrado para el día " . $turnDay . " a las " . $turnTimeActual . ". Por favor, seleccione una hora diferente."));
+            }
+        }
+    }
+
+    private function validateIfTimeAtentionIsAvailableTurns($turnDay, $turnTimeActual)
+    {
+        $turnTimeActualFormatted = date("H:i:s", strtotime($turnTimeActual . ":00"));
+        $timeArray = [];
+        $turns = $this->turnModel->getAllTurnByDay($turnDay);
+        foreach ($turns as $turn) {
+            array_push($timeArray, $turn["horario"]);
+        }
+        foreach ($timeArray as $turnTime) {
+            if (strcmp($turnTimeActualFormatted, $turnTime) === 0) {
                 throw new Exception(("Ya existe un turno registrado para el día " . $turnDay . " a las " . $turnTimeActual . ". Por favor, seleccione una hora diferente."));
             }
         }
@@ -71,7 +86,8 @@ class PatientController extends Controller
     {
         try {
             $data = $this->getDataFromFormPatient();
-            $this->validateIfTimeAtentionIsAvailable($data["dateAtention"], $data["turnTime"]);
+            $this->validateIfTimeAtentionIsAvailableTurnRequested($data["dateAtention"], $data["turnTime"]);
+            $this->validateIfTimeAtentionIsAvailableTurns($data["dateAtention"], $data["turnTime"]);
             $this->alreadyExistsTurnRequestedFromPatient($data["dniPatient"]);
             $this->turnRequestedModel->setStatus("SOLICITADO");
             $this->turnRequestedModel->setDniPatient($data['dniPatient']);
