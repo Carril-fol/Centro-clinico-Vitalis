@@ -53,7 +53,7 @@ function optionsTimeFormated()
         <div class="container-field">
             <label for="speciality">Especialidad</label>
             <select id="speciality" name="speciality" required>
-                <option value="" disabled selected>Selecciona una especialidad</option>
+                <option disabled selected>Selecciona una especialidad</option>
                 <?php optionsFormated(); ?>
             </select>
         </div>
