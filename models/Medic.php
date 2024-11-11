@@ -1,6 +1,5 @@
 <?php
 require_once  __DIR__ . '/../config.php';
-require_once __DIR__ . '/../models/User.php';
 
 class Medic
 {
@@ -76,6 +75,19 @@ class Medic
     public function getSpecialities()
     {
         $selectQuery = "SELECT DISTINCT especialidad FROM medico";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute();
+        return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllDataFomMedics()
+    {
+        $selectQuery = "SELECT m.dni, m.especialidad, u.nombre, u.apellido
+                        FROM medico AS m
+                        INNER JOIN usuario AS u
+                        ON u.dni = m.dni;
+                        WHERE m.estado = 'DESOCUPADO'
+        ";
         $resultQuery = $this->db->prepare($selectQuery);
         $resultQuery->execute();
         return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
