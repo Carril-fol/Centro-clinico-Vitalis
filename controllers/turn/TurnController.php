@@ -21,7 +21,7 @@ class TurnController extends Controller
     {
         session_start();
         $_SESSION['error'] = $error->getMessage();
-        header("Location: ../../views/" . $folder . "/" . $file . ".php" . "?action=update%id=" . $id);
+        header("Location: ../../views/" . $folder . "/" . $file . ".php" . "?action=update&id=" . $id);
         exit();
     }
 
@@ -65,6 +65,17 @@ class TurnController extends Controller
     {
         return [
             'dniPatient' => $this->sanitizeInput($_POST['dniPatient']),
+            'dateAtention' => $this->sanitizeInput($_POST['dateAtention']),
+            'turnTime' => $this->sanitizeInput($_POST['timeAtention']),
+            'speciality' => strtoupper($this->sanitizeInput($_POST['speciality']))
+        ];
+    }
+
+    public function getDataFromFormUpdate()
+    {
+        return [
+            'dniPatient' => $this->sanitizeInput($_POST['dniPatient']),
+            'dniMedic' => $this->sanitizeInput($_POST['dniMedic']),
             'dateAtention' => $this->sanitizeInput($_POST['dateAtention']),
             'turnTime' => $this->sanitizeInput($_POST['timeAtention']),
             'speciality' => strtoupper($this->sanitizeInput($_POST['speciality']))
@@ -115,15 +126,20 @@ class TurnController extends Controller
     private function actualizeTurn($turnData, $id)
     {
         $turnDataInDatabase = $this->detailTurn();
-        if ($turnData['speciality'] != $turnDataInDatabase['especialidad']) {
-            $dniMedicTurnInDatabase = $turnDataInDatabase['dni_medico'];
-            $this->medicModel->changeStatusMedic($dniMedicTurnInDatabase, "DESOCUPADO");
+        $turnDatabaseDniMedic = $turnDataInDatabase["dni_medico"];
+        $newDniMedic = $turnData["dniMedic"];
+
+        $dataFromNewMedic = $this->medicModel->getMedicByDni($newDniMedic);
+        if ($dataFromNewMedic["especialidad"] != $turnData["speciality"]) {
+            throw new Exception("El médico introducido no corresponde con la especialidad del turno.\nCambie La especialidad del turno.");
         }
-        $dniMedic = $this->getMedicForTurn($turnData['speciality'])['dni'];
-        $this->medicModel->changeStatusMedic($dniMedic, "OCUPADO");
+
+        $this->medicModel->changeStatusMedic($turnDatabaseDniMedic, "DESOCUPADO");
+        $this->medicModel->changeStatusMedic($newDniMedic, "OCUPADO");
+
         $this->turnModel->setId($id);
         $this->turnModel->setDniPatient($turnData['dniPatient']);
-        $this->turnModel->setDniMedic($dniMedic);
+        $this->turnModel->setDniMedic($newDniMedic);
         $this->turnModel->setDateAtention($turnData['dateAtention']);
         $this->turnModel->setTurnTime($turnData['turnTime']);
         $this->turnModel->setSpeciality($turnData['speciality']);
@@ -169,8 +185,8 @@ class TurnController extends Controller
             if ($requestMethod == "GET") {
                 return $this->detailTurn();
             } elseif ($requestMethod == "POST") {
-                $turnFormData = $this->getDataFromForm();
-                $this->actualizeTurn($turnFormData, $id);
+                $turnFormUpdateData = $this->getDataFromFormUpdate();
+                $this->actualizeTurn($turnFormUpdateData, $id);
                 $this->redirectToHome();
             }
         } catch (Exception $error) {
