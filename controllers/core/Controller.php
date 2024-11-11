@@ -46,8 +46,12 @@ class Controller
     public function getIdUrl()
     {
         $url = $_SERVER['REQUEST_URI'];
-        $id = $this->getParamsUrl($url)['id'];
-        return $id;
+        $queryParams = $this->getParamsUrl($url);
+        if (isset($queryParams['id'])) {
+            return $queryParams['id'];
+        } else {
+            return null;
+        }
     }
 
     public function errorInSession()
