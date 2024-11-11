@@ -82,4 +82,13 @@ class TurnRequested extends Turn
         $resultQuery->execute($paramsQuery);
         return $resultQuery->rowCount();
     }
+
+    public function getAllTurnRequestedByDay($date)
+    {
+        $paramsQuery = [":date"=>$date];
+        $selectQuery = "SELECT * FROM turnos_solicitados WHERE fecha_atencion = :date AND estado = 'SOLICITADO'";
+        $resultQuery = $this->db->prepare($selectQuery);
+        $resultQuery->execute($paramsQuery);
+        return $resultQuery->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
