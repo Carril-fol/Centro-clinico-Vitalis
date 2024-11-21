@@ -474,3 +474,35 @@ html {
     margin: 0;
     padding-left: 10px;
 }
+
+.boton-contacto-index {
+    background-color: var(--bg-blue);
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.boton-contacto-index:hover {
+    background-color: var(--bg-dark-blue);
+}
+
+.boton-contacto-index:active {
+    background-color: var(--bg-ocean-blue);
+    transform: translateY(0);
+}
+
+.seccion-contacto{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 200px;
+    gap: 20px;
+    margin-bottom: 100px;
+}
